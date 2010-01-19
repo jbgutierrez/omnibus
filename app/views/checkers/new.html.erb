@@ -1,0 +1,7 @@
+<% title "Checker" %>
+
+<% form_tag :checkers, :method => :post  do %>
+	<%= text_area_tag(:text, params[:text], :size => "80x40") %>
+	<br/>
+  <%= submit_tag "Check Syntax" %>
+<% end -%>
