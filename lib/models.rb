@@ -41,12 +41,14 @@ class Extension
     result = []
 
     inherited = principal.actions.dup
-    first_action = actions.first.chomp('...')
+    first_action = actions.first.chomp('...').strip
+    action_overriden = first_action.sub!(/^no /, '')
     match = inherited.find{ |a| a.start_with?(first_action)}
     if match
       actions.shift
       fork_index = inherited.index(match) 
-      result += inherited.slice!(0, fork_index + 1)
+      fork_index += 1 unless action_overriden
+      result += inherited.slice!(0, fork_index)
       result += actions
       result += inherited if options.include?(:join)
     else
