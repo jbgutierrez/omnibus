@@ -6,60 +6,60 @@ grammar Grammar
     test actors white principal extensions {
       def build
         result =
-	        {
-	          :test => test.build,
-	          :actors => actors.build,
-	          :principal => principal.build
-	        }
-	      result[:extensions] = extensions.build unless extensions.empty?
-	      result
+          {
+            :test => test.build,
+            :actors => actors.build,
+            :principal => principal.build
+          }
+        result[:extensions] = extensions.build unless extensions.empty?
+        result
       end
-		}
+    }
   end
 
   rule test
-	  comment space* 'Test:' space line_to_eol eol? {
-	    def build
-	      line_to_eol.text_value
-		  end
-		}
+    comment space* 'Test:' space line_to_eol eol? {
+      def build
+        line_to_eol.text_value
+      end
+    }
   end
 
   rule actors
     comment space* 'Actores:' space line_to_eol eol? {
-	    def build
-	      line_to_eol.text_value
-		  end
-		}
+      def build
+        line_to_eol.text_value
+      end
+    }
   end
 
-	rule principal
+  rule principal
     p:preconditions? actions postconditions {
-	    def build
-	      result = {}
-				result[:preconditions]  = p.build if p.respond_to?(:build)
-	      result[:actions]        = actions.build
+      def build
+        result = {}
+        result[:preconditions]  = p.build if p.respond_to?(:build)
+        result[:actions]        = actions.build
         result[:postconditions] = postconditions.build
-				result
-		  end
-		}
+        result
+      end
+    }
   end
 
   rule extensions
     extension* {
-	    def build
-	      elements.map{|e| e.build }
-	    end
-		}
+      def build
+        elements.map{|e| e.build }
+      end
+    }
   end
 
   rule comment
-	  (space* '#' line_to_eol eol?)*
+    (space* '#' line_to_eol eol?)*
   end
 
   rule extension
-    white	preconditions:preconditions_for_extension?	actions:actions_for_extension postconditions:postconditions_for_extension {
-      def	build
+    white preconditions:preconditions_for_extension?  actions:actions_for_extension postconditions:postconditions_for_extension {
+      def build
         result = {}
         result[:preconditions] = preconditions.build unless preconditions.empty?
         result[:actions] = actions.build
@@ -72,99 +72,99 @@ grammar Grammar
         result[:options] = options unless options.empty?
         result
       end
-		}
+    }
   end
 
   rule preconditions
     comment space* "Dado que" space first_step:line_to_eol eol? steps comment {
-      def	build
+      def build
         result = [ first_step.text_value ]
         result += steps.build
         result
       end
-		}
+    }
   end
 
   rule preconditions_for_extension
-	  comment space* "Dado que" opt:too_keyword? space first_step:line_to_eol eol? steps comment {
-	    def	build
-	      result = [ first_step.text_value ]
-	      result += steps.build
-	      result
-	    end
-
-	    def options
-				[:keep_preconditions] unless opt.empty?
-	    end
-		}
-  end
-
-  rule actions
-    comment space* "Cuando" space first_step:line_to_eol eol? steps comment {
-      def	build
-        result = [ first_step.text_value ]
-        result += steps.build
-        result
-      end
-		}
-  end
-
-  rule actions_for_extension
-    comment space* "Si" space first_step:line_to_eol eol? steps opt:join_step? comment {
-      def	build
-	      result = [ first_step.text_value ]
-	      result += steps.build
-	      result
-      end
-
-      def	options
-        [:join] unless opt.empty?
-      end
-		}
-  end
-
-  rule postconditions
-    comment space* "Entonces" space first_step:line_to_eol eol? steps comment {
-      def	build
-        result = [ first_step.text_value ]
-        result += steps.build
-        result
-      end
-		}
-  end
-
-  rule postconditions_for_extension
-    comment space* "Entonces" opt:too_keyword? space first_step:line_to_eol eol? steps comment {
-      def	build
+    comment space* "Dado que" opt:too_keyword? space first_step:line_to_eol eol? steps comment {
+      def build
         result = [ first_step.text_value ]
         result += steps.build
         result
       end
 
       def options
-				[:keep_postconditions] unless opt.empty?
+        [:keep_preconditions] unless opt.empty?
       end
-		}
+    }
+  end
+
+  rule actions
+    comment space* "Cuando" space first_step:line_to_eol eol? steps comment {
+      def build
+        result = [ first_step.text_value ]
+        result += steps.build
+        result
+      end
+    }
+  end
+
+  rule actions_for_extension
+    comment space* "Si" space first_step:line_to_eol eol? steps opt:join_step? comment {
+      def build
+        result = [ first_step.text_value ]
+        result += steps.build
+        result
+      end
+
+      def options
+        [:join] unless opt.empty?
+      end
+    }
+  end
+
+  rule postconditions
+    comment space* "Entonces" space first_step:line_to_eol eol? steps comment {
+      def build
+        result = [ first_step.text_value ]
+        result += steps.build
+        result
+      end
+    }
+  end
+
+  rule postconditions_for_extension
+    comment space* "Entonces" opt:too_keyword? space first_step:line_to_eol eol? steps comment {
+      def build
+        result = [ first_step.text_value ]
+        result += steps.build
+        result
+      end
+
+      def options
+        [:keep_postconditions] unless opt.empty?
+      end
+    }
   end
 
   rule steps
     step* {
-	    def build
-	      elements.map{|e| e.build}
-	    end
-		}
+      def build
+        elements.map{|e| e.build}
+      end
+    }
   end
 
   rule step
-	  comment space* "Y" !" continuo" space line_to_eol eol? comment {
-	    def	build
-	      line_to_eol.text_value
-	    end
-		}
+    comment space* "Y" !" continuo" space line_to_eol eol? comment {
+      def build
+        line_to_eol.text_value
+      end
+    }
   end
 
   rule join_step
-	  space* "Y continuo" eol? comment
+    space* "Y continuo" eol? comment
   end
 
   rule too_keyword

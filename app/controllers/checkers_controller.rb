@@ -1,11 +1,4 @@
-require 'test/unit'
-require 'rubygems'
-require 'active_support'
-require 'treetop'
-require 'treetop_ext'
-require 'polyglot'
-require 'generic'
-require 'grammar'
+require 'ppee_tests_checker'
 
 class CheckersController < ApplicationController
   
@@ -13,8 +6,9 @@ class CheckersController < ApplicationController
   end
   
   def create
-    GrammarParser.new.parse_or_fail(params[:text])
-    flash.now[:notice] = "La sintaxis es correcta"
+    tree = GrammarParser.new.parse_or_fail(params[:text]).build
+    @test = Test.new(tree)
+    flash.now[:notice] = "La sintaxis es correcta"    
   rescue Exception => e
     flash.now[:error] = e.message
   ensure

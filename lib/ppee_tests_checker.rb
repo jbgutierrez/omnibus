@@ -1,0 +1,10 @@
+require 'rubygems'
+require 'active_support'
+require 'treetop'
+require 'polyglot'
+
+require 'core_extensions'
+require 'treetop/treetop_ext'
+require 'treetop/generic'
+require 'treetop/grammar'
+require 'models'
