@@ -31,24 +31,18 @@ module PPEE
     end
   
     def all_preconditions
-      principal.preconditions + preconditions
+      inherited_preconditions + preconditions
+    end
+    
+    def inherited_preconditions
+      principal.preconditions
     end
   
     def all_actions
-      first_common_actions + specific_actions + last_common_actions
+      first_inherited_actions + specific_actions + last_inherited_actions
     end
   
-    def all_postconditions
-      keep?(postconditions) ? (principal.postconditions + postconditions) : postconditions 
-    end
-    
-    private
-
-    def keep?(values)
-      !values.empty? & values.first =~ /$[t|T]ambi[e|É]n/
-    end
-    
-    def first_common_actions      
+    def first_inherited_actions
       inherited.slice(0, fork_index)
     end
     
@@ -59,12 +53,26 @@ module PPEE
       result
     end
     
-    def last_common_actions
+    def last_inherited_actions
       inherited_copy = inherited
       join_index.times {|i| inherited_copy.shift }
       inherited_copy
     rescue
       []
+    end
+  
+    def all_postconditions
+      inherited_postconditions + postconditions 
+    end
+    
+    def inherited_postconditions
+      keep?(postconditions) ? (principal.postconditions + postconditions) : []
+    end
+    
+    private
+
+    def keep?(values)
+      !values.empty? & values.first =~ /$[t|T]ambi[e|É]n/
     end
         
     def first_action

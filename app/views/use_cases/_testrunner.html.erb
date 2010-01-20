@@ -1,0 +1,78 @@
+<H2>Component: <%= @use_case.use_case_diagram.functional_area.name %> </H2>
+<H3>Group: <%= @use_case.use_case_diagram.name %> </H3>
+
+<%# Escenario principal %>
+<H4>Add case: confirmed,manual</H4>
+<H5>Requirement: [Requerimientos afectados]</H5>
+<H5>Summary</H5>
+<%= @use_case.name %> (Escenario principal)
+<H5>Action</H5>
+  <p>Actor: <%= @use_case.ppee_test.actors %></p>
+  <% unless @use_case.ppee_test.principal.preconditions.empty? %>
+      <p>Precondiciones:</p>
+      <ul>
+      <% @use_case.ppee_test.principal.preconditions.each do |precondition| %>
+        <li><%= precondition %></li>
+      <% end %>
+      </ul>
+  <% end %>
+  <p>Pasos:</p>
+  <ol>
+    <% @use_case.ppee_test.principal.actions.each do |action| %>
+      <li><%= action %></li>
+    <% end %>
+  </ol>
+<H5>Effect</H5>
+  <ol>
+    <% @use_case.ppee_test.principal.postconditions.each do |postcondition| %>
+      <li><%= postcondition %></li>
+    <% end %>
+  </ol>
+<H5>Script</H5>
+<H5>Arguments</H5>
+<H5>End</H5>
+
+<%# Escenarios secundarios %>
+<% @use_case.ppee_test.extensions.each_with_index do |extension, index| %>
+  <H4>Add case: confirmed,manual</H4>
+  <H5>Requirement: [Requerimientos afectados]</H5>
+  <H5>Summary</H5>
+  <%= "#{@use_case.name} (Escenario secundario ##{index + 1})" %>
+  <H5>Action</H5>
+    <p>Actor: <%= @use_case.ppee_test.actors %></p>
+    <% unless extension.all_preconditions.empty? %>
+        <p>Precondiciones:</p>
+        <ul>
+	        <% extension.inherited_preconditions.each do |precondition| %>
+	          <li><%= precondition %></li>
+	        <% end %>
+	        <% extension.preconditions.each do |precondition| %>
+	          <li><strong><%= precondition %></strong></li>
+	        <% end %>
+        </ul>
+    <% end %>
+    <p>Pasos:</p>
+    <ol>
+      <% extension.first_inherited_actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
+      <% extension.specific_actions.each do |action| %>
+        <li><strong><%= action %></strong></li>
+      <% end %>
+      <% extension.last_inherited_actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
+    </ol>
+  <H5>Effect</H5>
+    <ol>
+      <% extension.inherited_postconditions.each do |postcondition| %>
+        <li><%= postcondition %></li>
+      <% end %>
+      <% extension.postconditions.each do |postcondition| %>
+        <li><strong><%= postcondition %></strong></li>
+      <% end %>
+    </ol>
+  <H5>Script</H5>
+  <H5>Arguments</H5>
+  <H5>End</H5>
+<% end %>

@@ -1,0 +1,20 @@
+<% title "Use Cases" %>
+
+<% FunctionalArea.all.sort_by{|a| - a.use_case_diagrams.count }.each do |area| %>
+	<h1 style="clear:both;"><%= area.name %></h1>
+	<% area.use_case_diagrams.sort_by{|d| - d.use_cases.count }.in_groups_of(2, false).each do |group| %>
+	  <% group.each do |diagram| %>
+		  <div style="width:50%;float:left">
+				<small><%= diagram.name %></small>
+				<ul style='list-style-type:none;'>
+					<% diagram.use_cases.all.each do |use_case| %>
+					  <% @style = "text-decoration: none;"
+					     @style += 'color:red' if use_case.test_cases.nil? %>
+						<li><%= link_to use_case.name, edit_use_case_path(use_case), :style => @style  %></li> 
+					<% end %>
+				</ul>
+			</div>
+		<% end %>
+		<div style="clear:both;"></div>
+	<% end %>
+<% end %>
