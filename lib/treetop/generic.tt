@@ -1,21 +1,23 @@
-grammar Generic
-  rule line_to_eol
-    (!eol .)*
-  end
+module PPEE
+	grammar Generic
+	  rule line_to_eol
+	    (!eol .)*
+	  end
 
-  rule white
-    (space / eol)*
-  end
+	  rule white
+	    (space / eol)*
+	  end
 
-  rule space
-    [ \t]
-  end
+	  rule space
+	    [ \t]
+	  end
 
-  rule eol
-    "\n" / ("\r" "\n"?)
-  end
+	  rule eol
+	    "\n" / ("\r" "\n"?)
+	  end
 
-  rule eof
-    !.
-  end
+	  rule eof
+	    !.
+	  end
+	end
 end

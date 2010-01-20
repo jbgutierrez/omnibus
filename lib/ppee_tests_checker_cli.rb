@@ -1,7 +1,7 @@
 require 'ppee_tests_checker'
 require 'erb'
 
-parser = GrammarParser.new
+parser = PPEE::GrammarParser.new
 
 example =<<eol
 Test: Crear nota
@@ -33,7 +33,7 @@ Y la nota todavía aparece
 eol
 
 tree = parser.parse_or_fail(example).build
-@test = Test.new(tree)
+@test = PPEE::Test.new(tree)
 
 template = File.read('template.erb')
 rhtml = ERB.new(template)
