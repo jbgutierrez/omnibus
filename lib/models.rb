@@ -1,6 +1,6 @@
 module PPEE
   class Test
-    attr_reader :test, :actors, :principal, :extensions
+    attr_reader :test, :actors
     def initialize(params)
       @test       = params[:test]
       @actors     = params[:actors]
@@ -11,23 +11,59 @@ module PPEE
         e
       end
     end
+    
+    def scenarios
+      principal_examples + extensions_examples
+    end
+        
+    def principal_examples
+      @principal.principal_examples
+    end
+    
+    def extensions_examples
+      @extensions.map(&:extension_examples).flatten
+    end
   end
 
   class Principal
-    hash_initializer :preconditions, :actions, :postconditions
-    attr_reader :preconditions, :actions, :postconditions
+    hash_initializer :preconditions, :actions, :postconditions, :examples
+    attr_accessor :preconditions, :actions, :postconditions, :examples
+    
     def preconditions
       @preconditions || []
+    end
+    
+    def examples
+      @examples || []
+    end
+    
+    def principal_examples
+      return [ self ] if examples.empty?
+      examples_copy = examples.dup
+      placeholders = examples_copy.shift
+      examples_copy.map do |example|
+        template = self.dup
+        placeholders.each_with_index do |place_holder, index|
+          value = example[index]
+          [ preconditions, actions, postconditions ].each do |list|
+            list.each{ |v| v.gsub!("<#{place_holder}>", value) }
+          end
+        end
+        template
+      end
     end
   end
 
   class Extension
-    hash_initializer :preconditions, :actions, :postconditions, :principal
-    attr_reader :preconditions, :actions, :postconditions, :principal
-    attr_writer :principal
+    hash_initializer :preconditions, :actions, :postconditions, :principal, :examples
+    attr_accessor :preconditions, :actions, :postconditions, :principal, :examples
 
     def preconditions
       @preconditions || []
+    end
+    
+    def examples
+      @examples || []
     end
   
     def all_preconditions
@@ -69,6 +105,33 @@ module PPEE
       keep?(postconditions) ? (principal.postconditions + postconditions) : []
     end
     
+    def extension_examples
+      return [ self ] if examples.empty?
+      examples_copy = examples.dup
+      placeholders = examples_copy.shift
+      examples_copy.map do |example|
+        template = self.dup
+        placeholders.each_with_index do |place_holder, index|
+          value = example[index]
+          [ template.preconditions,
+            template.actions,
+            template.postconditions,
+            template.principal.preconditions,
+            template.principal.actions,
+            template.principal.postconditions ].each do |list|
+            list.each { |v| v.gsub!("<#{place_holder}>", value) }
+          end
+          # template.preconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
+          # template.actions.each { |p| p.gsub!("<#{place_holder}>", value) }
+          # template.postconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
+          # template.principal.preconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
+          # template.principal.actions.each { |p| p.gsub!("<#{place_holder}>", value) }
+          # template.principal.postconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
+        end
+        template
+      end
+    end
+
     private
 
     def keep?(values)

@@ -2,6 +2,7 @@ module PPEE
 	grammar Grammar
 
 	  include Generic
+	  include Table
 
 	  rule root
 	    test actors white principal extensions {
@@ -35,12 +36,13 @@ module PPEE
 	  end
 
 	  rule principal
-	    p:preconditions? actions postconditions {
+	    p:preconditions? actions postconditions examples:examples? {
 	      def build
 	        result = {}
 	        result[:preconditions]  = p.build if p.respond_to?(:build)
 	        result[:actions]        = actions.build
 	        result[:postconditions] = postconditions.build
+	        result[:examples] = examples.build unless examples.empty?
 	        result
 	      end
 	    }
@@ -54,17 +56,14 @@ module PPEE
 	    }
 	  end
 
-	  rule comment
-	    (space* '#' line_to_eol eol?)*
-	  end
-
 	  rule extension
-	    white preconditions:preconditions? actions:actions_for_extension postconditions {
+	    white preconditions:preconditions? actions:actions_for_extension postconditions examples:examples? {
 	      def build
 	        result = {}
 	        result[:preconditions] = preconditions.build unless preconditions.empty?
 	        result[:actions] = actions.build
 	        result[:postconditions] = postconditions.build
+	        result[:examples] = examples.build unless examples.empty?
 	        result
 	      end
 	    }
@@ -110,10 +109,18 @@ module PPEE
 	    }
 	  end
 
+    rule examples
+      comment space* "Ejemplos:" eol table white {
+        def build
+          table.build
+        end
+      }
+    end
+
 	  rule steps
 	    step* {
 	      def build
-	        elements.map{|e| e.build}
+	        elements.map{|e| e.build }
 	      end
 	    }
 	  end

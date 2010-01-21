@@ -1,66 +1,66 @@
 <H2>Component: [Área funcional]</H2>
 <H3>Group: [Diagrama de casos de uso]</H3>
 
-<%# Escenario principal %>
-<H4>Add case: confirmed,manual</H4>
-<H5>Requirement: [Requerimientos afectados]</H5>
-<H5>Summary</H5>
-<%= @test.test %> (Escenario principal)
-<H5>Action</H5>
-  <p>Actor: <%= @test.actors %></p>
-  <% unless @test.principal.preconditions.empty? %>
-      <p>Precondiciones:</p>
-      <ul>
-      <% @test.principal.preconditions.each do |precondition| %>
-        <li><%= precondition %></li>
-      <% end %>
-      </ul>
-  <% end %>
-  <p>Pasos:</p>
-  <ol>
-    <% @test.principal.actions.each do |action| %>
-      <li><%= action %></li>
-    <% end %>
-  </ol>
-<H5>Effect</H5>
-  <ol>
-    <% @test.principal.postconditions.each do |postcondition| %>
-      <li><%= postcondition %></li>
-    <% end %>
-  </ol>
-<H5>Script</H5>
-<H5>Arguments</H5>
-<H5>End</H5>
+<% @test.principal_examples.each_with_index do |principal, index | %>
+	<H4>Add case: confirmed,manual</H4>
+	<H5>Requirement: [Requerimientos afectados]</H5>
+	<H5>Summary</H5>
+	<%= "#{@test.test} (Escenario ##{index + 1})" %>
+	<H5>Action</H5>
+	  <p>Actor: <%= @test.actors %></p>
+	  <% unless principal.preconditions.empty? %>
+	      <p>Precondiciones:</p>
+	      <ul>
+	        <% principal.preconditions.each do |precondition| %>
+	          <li><%= precondition %></li>
+	        <% end %>
+	      </ul>
+	  <% end %>
+	  <p>Pasos:</p>
+	  <ol>
+	    <% principal.actions.each do |action| %>
+	      <li><%= action %></li>
+	    <% end %>
+	  </ol>
+	<H5>Effect</H5>
+	  <ol>
+	    <% principal.postconditions.each do |postcondition| %>
+	      <li><%= postcondition %></li>
+	    <% end %>
+	  </ol>
+	<H5>Script</H5>
+	<H5>Arguments</H5>
+	<H5>End</H5>
+<% end %>
 
-<%# Escenarios secundarios %>
-<% @test.extensions.each_with_index do |extension, index| %>
-  <H4>Add case: confirmed,manual</H4>
-  <H5>Requirement: [Requerimientos afectados]</H5>
-  <H5>Summary</H5>
-  <%= "#{@test.test} (Escenario secundario ##{index + 1})" %>
-  <H5>Action</H5>
-    <p>Actor: <%= @test.actors %></p>
-    <% unless extension.all_preconditions.empty? %>
-        <p>Precondiciones:</p>
-        <ul>
+<% @test.extensions_examples.each_with_index do |extension, index | %>
+	<H4>Add case: confirmed,manual</H4>
+	<H5>Requirement: [Requerimientos afectados]</H5>
+	<H5>Summary</H5>
+	<%= "#{@test.test} (Escenario ##{index + 1})" %>
+	<H5>Action</H5>
+	  <p>Actor: <%= @test.actors %></p>
+	  <% unless extension.all_preconditions.empty? %>
+	      <p>Precondiciones:</p>
+	      <ul>
 	        <% extension.all_preconditions.each do |precondition| %>
 	          <li><%= precondition %></li>
 	        <% end %>
-        </ul>
-    <% end %>
-    <p>Pasos:</p>
-    <ol>
-      <% extension.all_actions.each do |action| %>
-        <li><%= action %></li>
-      <% end %>
-    </ol>
-  <H5>Effect</H5>
-    <ol>
-      <% extension.all_postconditions.each do |postcondition| %>
-        <li><%= postcondition %></li>
-      <% end %>
-    </ol>
-  <H5>Script</H5>
-  <H5>Arguments</H5>
-  <H5>End</H5>
+	      </ul>
+	  <% end %>
+	  <p>Pasos:</p>
+	  <ol>
+	    <% extension.all_actions.each do |action| %>
+	      <li><%= action %></li>
+	    <% end %>
+	  </ol>
+	<H5>Effect</H5>
+	  <ol>
+	    <% extension.all_postconditions.each do |postcondition| %>
+	      <li><%= postcondition %></li>
+	    <% end %>
+	  </ol>
+	<H5>Script</H5>
+	<H5>Arguments</H5>
+	<H5>End</H5>
 <% end %>

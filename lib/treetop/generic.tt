@@ -1,5 +1,9 @@
 module PPEE
 	grammar Generic
+		rule comment
+	    (space* '#' line_to_eol eol?)*
+	  end
+  
 	  rule line_to_eol
 	    (!eol .)*
 	  end

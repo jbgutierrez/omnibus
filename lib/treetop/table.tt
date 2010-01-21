@@ -1,0 +1,29 @@
+module PPEE
+  grammar Table
+    include Generic
+
+    rule table
+      table_row* {
+        def build
+	        elements.map{|e| e.build }
+        end
+      }
+    end
+
+    rule table_row
+      comment space* '|' cells:(cell '|')+ space* (eol+ / eof) comment {
+        def build
+					cells.elements.map do |elt| 
+	          value = elt.cell.text_value.strip
+	          value
+	        end
+				end
+      }
+    end
+
+    rule cell
+      (!('|' / eol) .)*
+    end
+
+  end
+end
