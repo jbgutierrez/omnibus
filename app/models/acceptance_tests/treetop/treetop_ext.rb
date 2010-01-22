@@ -1,18 +1,9 @@
-begin
-  require 'treetop'
-  require 'treetop/runtime'
-  require 'treetop/ruby_extensions'
-rescue LoadError
-  require "rubygems"
-  gem "treetop"
-  require 'treetop'
-  require 'treetop/runtime'
-  require 'treetop/ruby_extensions'
-end
+require 'treetop'
+require 'treetop/runtime'
+require 'treetop/ruby_extensions'
 
 module PPEE
   module Parser
-    # Raised if Cucumber fails to parse a feature file
     class SyntaxError < StandardError
       def initialize(parser, file)
         tf = parser.terminal_failures

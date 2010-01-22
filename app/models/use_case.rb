@@ -1,4 +1,4 @@
-require 'ppee_tests_checker'
+require 'acceptance_tests'
 
 class UseCase < ActiveRecord::Base
   belongs_to :use_case_diagram
