@@ -90,19 +90,34 @@ module PPEE
     end
     
     def last_inherited_actions
-      inherited_copy = inherited
-      join_index.times {|i| inherited_copy.shift }
-      inherited_copy
+      result = inherited - first_inherited_actions
+      result.shift if fork_overriden?
+      result
     rescue
       []
     end
   
     def all_postconditions
-      inherited_postconditions + postconditions 
+      inherited_postconditions + specific_postconditions 
     end
     
     def inherited_postconditions
-      keep?(postconditions) ? (principal.postconditions + postconditions) : []
+      return [] unless keep?(postconditions)
+      principal.postconditions - overriden_postconditions
+    end
+    
+    def specific_postconditions
+      postconditions.reject{ |p| p =~ /\.\.\.$/ }
+    end
+    
+    def overriden_postconditions
+      return [] unless keep?(postconditions)
+      postconditions.map do |p|
+        if p.end_with?('...')
+          prefix = p.gsub(/^ *([t|T]ambi[e|é]n)? *no */, '').gsub('...', '')
+          principal.postconditions.find{ |a| a.start_with?(prefix) }
+        end
+      end.compact
     end
     
     def extension_examples
@@ -121,12 +136,6 @@ module PPEE
             template.principal.postconditions ].each do |list|
             list.each { |v| v.gsub!("<#{place_holder}>", value) }
           end
-          # template.preconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
-          # template.actions.each { |p| p.gsub!("<#{place_holder}>", value) }
-          # template.postconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
-          # template.principal.preconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
-          # template.principal.actions.each { |p| p.gsub!("<#{place_holder}>", value) }
-          # template.principal.postconditions.each { |p| p.gsub!("<#{place_holder}>", value) }
         end
         template
       end
@@ -135,7 +144,7 @@ module PPEE
     private
 
     def keep?(values)
-      !values.empty? & values.first =~ /$[t|T]ambi[e|É]n/
+      values.first =~ /^ *[t|T]ambi[e|é]n/ unless values.empty?
     end
         
     def first_action

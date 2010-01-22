@@ -43,22 +43,34 @@
 	  <% unless extension.all_preconditions.empty? %>
 	      <p>Precondiciones:</p>
 	      <ul>
-	        <% extension.all_preconditions.each do |precondition| %>
+	        <% extension.inherited_preconditions.each do |precondition| %>
 	          <li><%= precondition %></li>
 	        <% end %>
-	      </ul>
+	        <% extension.preconditions.each do |precondition| %>
+	          <li><strong><%= precondition %></strong></li>
+	        <% end %>
+        </ul>
 	  <% end %>
 	  <p>Pasos:</p>
 	  <ol>
-	    <% extension.all_actions.each do |action| %>
-	      <li><%= action %></li>
-	    <% end %>
+			<% extension.first_inherited_actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
+      <% extension.specific_actions.each do |action| %>
+        <li><strong><%= action %></strong></li>
+      <% end %>
+      <% extension.last_inherited_actions.each do |action| %>
+        <li><%= action %></li>
+      <% end %>
 	  </ol>
 	<H5>Effect</H5>
 	  <ol>
-	    <% extension.all_postconditions.each do |postcondition| %>
-	      <li><%= postcondition %></li>
-	    <% end %>
+	    <% extension.inherited_postconditions.each do |postcondition| %>
+        <li><%= postcondition %></li>
+      <% end %>
+      <% extension.specific_postconditions.each do |postcondition| %>
+        <li><strong><%= postcondition %></strong></li>
+      <% end %>
 	  </ol>
 	<H5>Script</H5>
 	<H5>Arguments</H5>
