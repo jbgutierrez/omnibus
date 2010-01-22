@@ -1,0 +1,62 @@
+%h2= "Component: #{@use_case.use_case_diagram.functional_area.name}"
+%h3= "Group: #{@use_case.use_case_diagram.name}"
+
+- @use_case.ppee_test.principal_examples.each_with_index do |principal, index|
+  %h4 Add case: confirmed,manual
+  %h5 Requirement: [Requerimientos afectados]
+  %h5 Summary
+  = "#{@use_case.name} (Escenario principal ##{index + 1})"
+  %h5 Action
+  %p= "Actor: #{@use_case.ppee_test.actors}"
+  - unless principal.preconditions.empty?
+    %p Precondiciones:
+    %ul
+      - principal.preconditions.each do |precondition|
+        %li= precondition
+  %p Pasos:
+  %ol
+    - principal.actions.each do |action|
+      %li= action
+
+  %h5 Effect
+  %ol
+    - principal.postconditions.each do |postcondition|
+      %li= postcondition
+  %h5 Script
+  %h5 Arguments
+  %h5 End
+
+- @use_case.ppee_test.extensions_examples.each_with_index do |extension, index|
+  %h4 Add case: confirmed,manual
+  %h5 Requirement: [Requerimientos afectados]
+  %h5 Summary
+  = "#{@use_case.name} (Escenario alternativo ##{index + 1})"
+  %h5 Action
+  %p= "Actor: #{@use_case.ppee_test.actors}"
+  - unless extension.all_preconditions.empty?
+    %p Precondiciones:
+    %ul
+      - extension.inherited_preconditions.each do |precondition|
+        %li= precondition
+      - extension.preconditions.each do |precondition|
+        %li
+          %strong= precondition
+  %p Pasos
+  %ol
+    - extension.first_inherited_actions.each do |action|
+      %li= action
+    - extension.specific_actions.each do |action|
+      %li
+        %strong= action
+    - extension.last_inherited_actions.each do |action|
+      %li= action
+  %h5 Effect
+  %ol
+    - extension.inherited_postconditions.each do |postcondition|
+      %li= postcondition
+    - extension.specific_postconditions.each do |postcondition|
+      %li
+        %strong= postcondition
+  %h5 Script
+  %h5 Arguments
+  %h5 End
