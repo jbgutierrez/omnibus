@@ -1,4 +1,4 @@
-class UseCasesController < ApplicationController
+class UseCasesController < InheritedResources::Base
   def index
   end
   

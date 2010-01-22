@@ -21,6 +21,8 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'chriseppstein-compass', :lib => 'compass'
   config.gem 'haml', :lib => 'haml', :version => '>=2.2.0'
+  config.gem 'justinfrench-formtastic', :lib => 'formtastic'
+  config.gem 'inherited_resources'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

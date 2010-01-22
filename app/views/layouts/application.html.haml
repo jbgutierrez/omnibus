@@ -1,12 +1,12 @@
-!!!
-%html
+!!! Strict
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= yield(:title)
     %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}/
-    %link{ :href => "/stylesheets/application.css", :rel => "stylesheet", :media => "screen, projection", :type => "text/css" }
-    = javascript_include_tag 'jquery-1.4.min', 'application'
+    = stylesheet_link_tag 'application', 'formtastic', 'formtastic_changes', :cache => "base"
+    = javascript_include_tag 'jquery-1.4.min', 'application', :cache => "base"
     = yield(:head)
-    /
+    /                                                         
       [if IE]><link rel="stylesheet" href="stylesheets/ie.css" type="text/css" media="screen, projection"><![endif]
   %body
     #container
