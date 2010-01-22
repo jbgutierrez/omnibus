@@ -23,6 +23,8 @@ Rails::Initializer.run do |config|
   config.gem 'haml', :lib => 'haml', :version => '>=2.2.0'
   config.gem 'justinfrench-formtastic', :lib => 'formtastic'
   config.gem 'inherited_resources'
+  # wget http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.8.0.tar.gz
+  # gem install -r ultraviolet --include-dependencies
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -43,3 +45,5 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+Harsh.enable_haml

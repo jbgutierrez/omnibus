@@ -10,7 +10,7 @@
 					<% diagram.use_cases.all.each do |use_case| %>
 					  <% @style = "text-decoration: none;"
 					     @style += 'color:red' if use_case.test_cases.nil? %>
-						<li><%= link_to use_case.name, edit_use_case_path(use_case), :style => @style  %></li> 
+						<li><%= link_to use_case.name, use_case.test_cases.blank? ? edit_use_case_path(use_case) : use_case, :style => @style  %></li> 
 					<% end %>
 				</ul>
 			</div>

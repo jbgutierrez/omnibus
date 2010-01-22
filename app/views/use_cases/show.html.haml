@@ -1,1 +1,8 @@
-= render 'form'
+#source{:style => 'overflow: auto; color: black;'}
+  :harsh
+    #!harsh theme=sunburst
+    #{format(@use_case.test_cases)}
+
+= link_to "Editar", edit_use_case_path(@use_case)
+ó
+= link_to "Listado", use_cases_path
