@@ -1,0 +1,17 @@
+- title "Requirements"
+
+%table
+  %tr
+    %th Name
+    %th Description
+    %th State
+  - for requirement in @requirements
+    %tr
+      %td= h requirement.name
+      %td= h requirement.description
+      %td= h requirement.state
+      %td= link_to 'Show', requirement
+      %td= link_to 'Edit', edit_requirement_path(requirement)
+      %td= link_to 'Destroy', requirement, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Requirement", new_requirement_path

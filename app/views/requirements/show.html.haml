@@ -1,0 +1,18 @@
+- title "Requirement"
+
+%p
+  %strong Name:
+  =h @requirement.name
+%p
+  %strong Description:
+  =h @requirement.description
+%p
+  %strong State:
+  =h @requirement.state
+
+%p
+  = link_to "Edit", edit_requirement_path(@requirement)
+  |
+  = link_to "Destroy", @requirement, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", requirements_path

@@ -25,6 +25,8 @@ Rails::Initializer.run do |config|
   config.gem 'inherited_resources'
   # wget http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.8.0.tar.gz
   # gem install -r ultraviolet --include-dependencies
+  config.gem 'state_machine'
+  
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
