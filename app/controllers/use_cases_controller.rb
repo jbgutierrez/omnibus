@@ -7,11 +7,10 @@ class UseCasesController < InheritedResources::Base
   end
   
   def update
-    @use_case = UseCase.find(params[:id])
-    @use_case.update_attributes(params[:use_case])
-    unless @use_case.errors.empty?
-      flash.now[:error] = @use_case.errors.on_base
+    super do
+      unless @use_case.errors.empty?
+        flash.now[:error] = @use_case.errors.on_base
+      end      
     end
-    render :action => 'edit'
   end
 end
