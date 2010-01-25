@@ -1,0 +1,68 @@
+.column {
+	width: 45%;
+	height: 400px;
+	border: solid 1px #eee;
+	float: left;
+	margin-left: 5px;
+	overflow: hidden;
+}
+
+.column ul {
+	list-style: none;
+	overflow: scroll;
+	height: 403px;
+}
+
+.column ul li {
+	list-style: none;
+	border: solid 1px #ccc;
+	padding: 2px;
+	margin: 2px;
+}
+
+ul.internal_list {
+	list-style: none;
+	display: none;
+	width: 95%;
+	margin:0px;
+	height: auto;
+	overflow: auto;
+}
+
+ul.internal_list li {
+	list-style: none;
+	line-height: 10px;
+	padding-left: 5px;
+	font-size: smaller;
+}
+
+.requirement, .use_case {
+	cursor: move;
+}
+
+.destroy {
+	background-image: url(../images/close.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: Transparent;
+	width: 16px;
+	height: 12px;
+	float: right;
+	cursor: pointer;
+}
+
+.expand {
+	background-position: center right;
+	background-repeat: no-repeat;
+	background-color: Transparent;
+  background-image: url(../images/expanded.png);
+	width: 35px;
+	height: 20px;
+	float: right;
+	cursor: pointer;
+	color: #222;	
+}
+
+.expanded {
+	background-image: url(../images/collapsed.png);
+}

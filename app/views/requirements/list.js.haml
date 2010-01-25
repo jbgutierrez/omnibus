@@ -1,0 +1,4 @@
+- list_requirement = escape_javascript(render :partial => 'list_requirement', :locals => { :requirement => @requirement })
+="$('#requirement_#{@requirement.id}').replaceWith('#{list_requirement}')"
+- list_use_case = escape_javascript(render :partial => 'list_use_case', :locals => { :use_case => @use_case } )
+="$('#use_case_#{@use_case.id}').replaceWith('#{list_use_case}');"

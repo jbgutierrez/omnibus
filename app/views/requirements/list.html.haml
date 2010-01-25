@@ -1,0 +1,9 @@
+.column
+  %span Requerimientos
+  %ul
+    = render :partial => 'list_requirement', :as => :requirement, :collection => Requirement.all
+
+.column
+  %span Casos de uso
+  %ul
+    = render :partial => 'list_use_case', :as => :use_case, :collection => UseCase.all

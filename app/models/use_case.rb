@@ -1,6 +1,7 @@
 require 'acceptance_tests'
 
 class UseCase < ActiveRecord::Base
+  has_and_belongs_to_many :requirements
   belongs_to :use_case_diagram
   validates_presence_of :test_cases, :name
   

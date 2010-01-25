@@ -1,0 +1,8 @@
+- content_tag_for :li, use_case do
+  %span= use_case.name
+  %a.expand= use_case.requirements.count
+  %ul.internal_list
+    - use_case.requirements.each do |r|
+      %li{:id => "inner_use_case_#{r.id}"}
+        %span= r.name
+        %a.destroy

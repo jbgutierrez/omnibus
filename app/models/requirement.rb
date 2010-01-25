@@ -1,5 +1,6 @@
 class Requirement < ActiveRecord::Base
-  versioned :if => lambda {|r| r.status.changed? and !new_record? }
+  has_and_belongs_to_many :use_cases
+  versioned :if => lambda {|r| r.status_changed? and !r.new_record? }
 
   state_machine :initial => :original, :attribute => :status do
     event :anular do
