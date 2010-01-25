@@ -10,6 +10,12 @@
       [if IE]><link rel="stylesheet" href="stylesheets/ie.css" type="text/css" media="screen, projection"><![endif]
   %body
     #container
-      - flash.each do |name, msg|
-        = content_tag :div, msg, :id => "flash_#{name}"
-      = yield
+      %ul#tabs
+        %li.selected
+          = link_to "Requerimientos", requirements_path
+        %li
+          = link_to "Casos de uso", use_cases_path
+      #content
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :class => "#{name}"
+        = yield

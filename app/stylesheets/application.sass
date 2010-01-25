@@ -1,4 +1,5 @@
 @import blueprint/reset.sass
+@import compass/utilities.sass
 @import partials/base.sass
 @import blueprint
 
@@ -6,14 +7,14 @@
 +blueprint-typography
 
 body
-  background-color: #4B7399
+  background-color: #507AAA
   font-family:  Verdana, Helvetica, Arial
 
-a img
-  border: none
+div, ul
+  overflow: hidden
 
-a
-  color: #0000FF
+div, ul, p
+  margin: 0
 
 .clear
   clear: both
@@ -21,25 +22,38 @@ a
   overflow: hidden
 
 #container
-  width: 75%
-  margin: 0 auto
-  background-color: #FFF
-  padding: 20px 40px
-  border: solid 1px black
-  margin-top: 20px
+  +container
+  width: 100%
   overflow: hidden
 
-#flash_notice, #flash_error
-  padding: 5px 8px
-  margin: 10px 0
+#tabs
+  margin-top: 30px
+  +no-bullet
+  li
+    cursor: pointer
+    background-color: #507AAA
+    float: left
+    padding: 5px 10px
+    margin-left: -1px
+  li:first-child   
+    margin-left: 10px
+  li:hover
+    background-color: #759fcf
+  a
+    text-decoration: none
+    font-weight: bold
+    color: #EEEEEE
+  .selected
+    background-color: #EEEEEE
+    a
+      color: #507AAA
+  .selected:hover
+    background-color: #EEEEEE
 
-#flash_notice
-  background-color: #CFC
-  border: solid 1px #6C6
-
-#flash_error
-  background-color: #FCC
-  border: solid 1px #C66
+#content
+  margin: 0 auto
+  padding: 20px 40px
+  background-color: #EEEEEE
 
 .fieldWithErrors
   display: inline
@@ -63,8 +77,17 @@ a
     color: #333
     margin-bottom: 0
     padding: 8px
-  ul
+  ul                                          
     margin: 2px 24px
     li
       font-size: 12px
       list-style: disc
+
+.error
+  +error
+
+.notice
+  +notice
+
+.success
+  +success
