@@ -26,6 +26,9 @@ Rails::Initializer.run do |config|
   # wget http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.8.0.tar.gz
   # gem install -r ultraviolet --include-dependencies
   config.gem 'state_machine'
+  config.gem 'vestal_versions'
+  config.gem 'will_paginate', :version => '~> 2.3.11'
+  config.gem 'searchlogic'
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).

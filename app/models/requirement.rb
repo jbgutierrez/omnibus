@@ -1,5 +1,7 @@
 class Requirement < ActiveRecord::Base
-  state_machine :initial => :original, :attribute => :state do
+  versioned :if => lambda {|r| r.status.changed? and !new_record? }
+
+  state_machine :initial => :original, :attribute => :status do
     event :anular do
       transition [ any - :anulado ] => :anulado
     end
@@ -34,5 +36,13 @@ class Requirement < ActiveRecord::Base
   
   def state_transitions_names
     state_transitions.map(&:to)
+  end
+  
+  def self.status_values
+    [ :original, :detallado, :en_curso, :en_pruebas, :finalizado, :implantado, :modificar, :alterado ]
+  end
+  
+  def self.release_versions
+    Requirement.all(:select => 'release_version', :group => 'release_version').reject{ |r| r.release_version.blank? }.map{ |r| r.release_version }
   end
 end
