@@ -1,11 +1,11 @@
 <% title "Use Cases" %>
 
 <% FunctionalArea.all.sort_by{|a| - a.use_case_diagrams.count }.each do |area| %>
-	<h1 style="clear:both;"><%= area.name %></h1>
+	<h3 style="clear:both;"><%= area.name %></h3>
 	<% area.use_case_diagrams.sort_by{|d| - d.use_cases.count }.in_groups_of(2, false).each do |group| %>
 	  <% group.each do |diagram| %>
-		  <div style="width:50%;float:left">
-				<small><%= diagram.name %></small>
+		  <div style="width:40%;float:left" class='box'>
+				<strong><%= diagram.name %></strong>
 				<ul style='list-style-type:none;'>
 					<% diagram.use_cases.all.each do |use_case| %>
 					  <% @style = "text-decoration: none;"
@@ -18,3 +18,5 @@
 		<div style="clear:both;"></div>
 	<% end %>
 <% end %>
+
+<%= link_to 'Nuevo requerimeinto', new_use_case_path %>

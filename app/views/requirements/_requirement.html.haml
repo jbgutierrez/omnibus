@@ -5,3 +5,5 @@
     = f.input :status, :as => :select, :collection => [ @requirement.status ] + @requirement.state_transitions_names
     = f.input :date
   = f.submit
+  ó
+  = link_to "Cancelar", requirements_path, :class => 'warn'

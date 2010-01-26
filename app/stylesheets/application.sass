@@ -6,24 +6,25 @@
 // To generate css equivalent to the blueprint css but with your configuration applied, uncomment:
 +blueprint-typography
 
+!blue = #507AAA
+!grey = #FFFFFF
+!dark_grey = #E4E4E4
+!light_blue = #E5ECF9
+
 body
-  background-color: #507AAA
+  background-color= !blue
   font-family:  Verdana, Helvetica, Arial
 
-div, ul
-  overflow: hidden
-
-div, ul, p
+pre, div, ul, p
   margin: 0
 
-.clear
-  clear: both
-  height: 0
+div, ul
   overflow: hidden
 
 #container
   +container
   width: 100%
+  height: 100%
   overflow: hidden
 
 #tabs
@@ -31,7 +32,7 @@ div, ul, p
   +no-bullet
   li
     cursor: pointer
-    background-color: #507AAA
+    background-color= !blue
     float: left
     padding: 5px 10px
   li:hover
@@ -41,16 +42,16 @@ div, ul, p
     font-weight: bold
     color: #EEEEEE
   .selected
-    background-color: #EEEEEE
+    background-color= !grey
     a
       color: #507AAA
   .selected:hover
-    background-color: #EEEEEE
+    background-color= !grey
 
 #content
   margin: 0 auto
   padding: 20px 40px
-  background-color: #EEEEEE
+  background-color= !grey
 
 .fieldWithErrors
   display: inline
@@ -80,11 +81,29 @@ div, ul, p
       font-size: 12px
       list-style: disc
 
+#filters
+  margin-bottom: 8px
+  padding: 0.7em
+  border= 1px solid !dark_grey
+
 .error
   +error
-
 .notice
   +notice
-
 .success
   +success
+
+.box
+  margin: 10px
+  float: left
+  padding: 1.5em
+  margin-bottom: 1.5em
+  background-color= !light_blue
+  border: 1px solid #CECFD0
+
+a.warn
+  color: red
+
+#source
+  overflow: auto
+  color: black

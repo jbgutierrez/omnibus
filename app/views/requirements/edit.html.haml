@@ -1,8 +1,2 @@
-- title "Edit Requirement"
-
-= render :partial => 'form'
-
-%p
-  = link_to "Edit", edit_requirement_path(@requirement)
-  |
-  = link_to "View All", requirements_path
+- title @requirement.name
+= render @requirement

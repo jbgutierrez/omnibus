@@ -1,8 +1,35 @@
-#source{:style => 'overflow: auto; color: black;'}
-  :harsh
-    #!harsh theme=sunburst
-    #{format(@use_case.test_cases)}
+- title @use_case.name
+%p
+  %strong Nombre
+  %p= @use_case.name
+%p
+
+%div
+  .box
+    %strong Requerimientos
+    - @use_case.requirements.each do |r|
+      %p= link_to r.name
+    %p= link_to "Gestión de relaciones", list_requirements_path
+
 
 = link_to "Editar", edit_use_case_path(@use_case)
-ó
+|
 = link_to "Listado", use_cases_path
+|
+= link_to "Eliminar", @use_cases, :confirm => 'Estás seguro?', :method => :delete, :style => 'color:red;'
+
+%p
+  %strong= pluralize(@use_case.ppee_test.scenarios.size, 'prueba asociada', 'pruebas asociadas')
+  #source
+    :harsh
+      #!harsh theme=sunburst
+      #{format(@use_case.test_cases)}
+
+%p
+  %strong Batería de pruebas de testrunner
+  .box
+    - begin
+      - unless @use_case.ppee_test.nil?
+        = render :partial => 'testrunner'
+    - rescue
+      %p Hay errores en la generación de la plantilla xml

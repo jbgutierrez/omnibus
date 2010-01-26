@@ -1,7 +1,8 @@
 - title "Requerimientos"
 
 - form_for @search, nil, nil, :html => { :class => "formtastic" } do |f|
-  %fieldset
+  %fieldset#filters
+    %legend Filtros
     %ol
       %li
         = f.label :name_like, "Nombre"
@@ -9,17 +10,19 @@
       %li
         = f.label :description_like, "Descripción"
         = f.text_field :description_like
+    %ol
       %li
         = f.label :status_eq, "Estado"
         = f.collection_select :status_eq, Requirement.status_values, :to_s, :to_s, :include_blank => true
       %li
         = f.label :release_version_eq, "Version"
         = f.collection_select :release_version_eq, Requirement.release_versions, :to_s, :to_s, :include_blank => true
-      %li= f.submit "Buscar"
+      %li
+        = f.submit "Buscar"
+        ó
+        = link_to "Nuevo", new_requirement_path
 
 = will_paginate @requirements
-
-%p= link_to "Nuevo requerimiento", new_requirement_path
 
 %table
   %tr
@@ -28,11 +31,8 @@
     %th Estado
   - for requirement in @requirements
     %tr
-      %td= h requirement.name
-      %td= h requirement.description
+      %td= link_to truncate(requirement.name, :length => 50), requirement
+      %td= h truncate(requirement.description, :length => 120 )
       %td= h requirement.status
-      %td= link_to 'Show', requirement
-      %td= link_to 'Edit', edit_requirement_path(requirement)
-      %td= link_to 'Destroy', requirement, :confirm => 'Are you sure?', :method => :delete
 
 = will_paginate @requirements

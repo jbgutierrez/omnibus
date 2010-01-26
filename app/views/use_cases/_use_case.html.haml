@@ -1,0 +1,6 @@
+- semantic_form_for @use_case do |f|
+  = f.inputs
+  - f.buttons do
+    = f.commit_button
+    ó
+    = link_to "Cancelar", use_cases_path, :class => 'warn'

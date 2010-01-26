@@ -1,14 +1,2 @@
-- title "Edit Use Case"
-
-- semantic_form_for @use_case do |f|
-  = f.inputs
-  - f.buttons do
-    = f.commit_button
-    ó
-    = link_to "Listado", use_cases_path
-
-- begin
-  - unless @use_case.ppee_test.nil?
-    = render :partial => 'testrunner'
-- rescue
-  %p Hay errores en la generación de la plantilla xml
+- title @use_case.name
+= render @use_case
