@@ -1,4 +1,34 @@
 module PPEE
+  
+  def self.search_index(collection, prefix)
+    match = collection.find{ |a| a.lstrip.start_with?(prefix)}
+    collection.index(match) 
+  end
+
+  def self.build_list(list, keys, values)
+    list.map do |original|
+      item = original.dup
+      placeholders = item.scan(/<[^>]+>/)
+      placeholders.each do |placeholder|
+        placeholder.delete! '<'
+        placeholder.delete! '>'
+        remove_blanks = placeholder.chomp!('?')
+        value = nil
+        index = PPEE.search_index(keys, placeholder)
+        value = values[index] unless index.nil?
+        if remove_blanks and value.blank?
+          item = nil
+          break
+        else
+          value ||= Time.now.to_s
+          item.gsub!("<#{placeholder}>", value)
+          item.gsub!("<#{placeholder}?>", '')
+        end
+      end
+      item
+    end.compact
+  end
+
   class Test
     attr_reader :test, :actors
     def initialize(params)
@@ -36,19 +66,16 @@ module PPEE
     def examples
       @examples || []
     end
-    
+        
     def principal_examples
       return [ self ] if examples.empty?
       examples_copy = examples.dup
       placeholders = examples_copy.shift
       examples_copy.map do |example|
         template = self.dup
-        placeholders.each_with_index do |place_holder, index|
-          value = example[index]
-          [ preconditions, actions, postconditions ].each do |list|
-            list.each{ |v| v.gsub!("<#{place_holder}>", value) }
-          end
-        end
+        template.preconditions  = PPEE.build_list(preconditions, placeholders, example)
+        template.actions        = PPEE.build_list(actions, placeholders, example)
+        template.postconditions = PPEE.build_list(postconditions, placeholders, example)
         template
       end
     end
@@ -126,17 +153,15 @@ module PPEE
       placeholders = examples_copy.shift
       examples_copy.map do |example|
         template = self.dup
-        placeholders.each_with_index do |place_holder, index|
-          value = example[index]
-          [ template.preconditions,
-            template.actions,
-            template.postconditions,
-            template.principal.preconditions,
-            template.principal.actions,
-            template.principal.postconditions ].each do |list|
-            list.each { |v| v.gsub!("<#{place_holder}>", value) }
-          end
-        end
+        template.preconditions  = PPEE.build_list(preconditions, placeholders, example)
+        template.actions        = PPEE.build_list(actions, placeholders, example)
+        template.postconditions = PPEE.build_list(postconditions, placeholders, example)
+        
+        template.principal = principal.dup
+        template.principal.preconditions  = PPEE.build_list(principal.preconditions, placeholders, example)
+        template.principal.actions        = PPEE.build_list(principal.actions, placeholders, example)
+        template.principal.postconditions = PPEE.build_list(principal.postconditions, placeholders, example)
+        
         template
       end
     end
@@ -165,15 +190,10 @@ module PPEE
       actions.last.strip!
       actions.last.chomp!('...')
       actions.last      
-    end    
-
-    def search_index(collection, prefix)
-      match = collection.find{ |a| a.start_with?(prefix)}
-      collection.index(match) 
     end
     
     def fork_index
-      index = search_index(inherited, first_action)
+      index = PPEE.search_index(inherited, first_action)
       index += 1 unless fork_overriden?
       index
     end
@@ -181,7 +201,7 @@ module PPEE
     def join_index
       index = nil
       if has_continue_clause?
-        index = last_action.blank? ? fork_index : search_index(inherited, last_action)
+        index = last_action.blank? ? fork_index : PPEE.search_index(inherited, last_action)
       end
       index
     end
