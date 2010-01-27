@@ -20,7 +20,7 @@ module PPEE
           item = nil
           break
         else
-          value ||= Time.now.to_s
+          value ||= "FALTA LA CLAVE"
           item.gsub!("<#{placeholder}>", value)
           item.gsub!("<#{placeholder}?>", '')
         end
@@ -36,10 +36,10 @@ module PPEE
       @actors     = params[:actors]
       @principal  = Principal.new(params[:principal])
       @extensions = (params[:extensions] || []).map do |extension_params|
-        e = Extension.new(extension_params)
-        e.principal = @principal
-        e
+        extension_params[:principal] = @principal
+        Extension.new(extension_params)
       end
+      [@test, @actors, @principal, @extensions].each(&:freeze)
     end
     
     def scenarios
@@ -56,43 +56,41 @@ module PPEE
   end
 
   class Principal
-    hash_initializer :preconditions, :actions, :postconditions, :examples
-    attr_accessor :preconditions, :actions, :postconditions, :examples
-    
-    def preconditions
-      @preconditions || []
+    attr_reader :preconditions, :actions, :postconditions, :examples
+
+    def initialize(args)
+      @preconditions  = args[:preconditions] || []
+      @actions        = args[:actions]
+      @postconditions = args[:postconditions]
+      @examples       = args[:examples] || []
+      [@preconditions, @actions, @postconditions, @examples].each(&:freeze)
     end
     
-    def examples
-      @examples || []
-    end
-        
     def principal_examples
       return [ self ] if examples.empty?
       examples_copy = examples.dup
       placeholders = examples_copy.shift
       examples_copy.map do |example|
-        template = self.dup
-        template.preconditions  = PPEE.build_list(preconditions, placeholders, example)
-        template.actions        = PPEE.build_list(actions, placeholders, example)
-        template.postconditions = PPEE.build_list(postconditions, placeholders, example)
-        template
+        args = { :preconditions  => PPEE.build_list(preconditions, placeholders, example),
+                 :actions        => PPEE.build_list(actions, placeholders, example),
+                 :postconditions => PPEE.build_list(postconditions, placeholders, example) }
+        Principal.new(args)
       end
     end
   end
 
   class Extension
-    hash_initializer :preconditions, :actions, :postconditions, :principal, :examples
-    attr_accessor :preconditions, :actions, :postconditions, :principal, :examples
+    attr_reader :preconditions, :actions, :postconditions, :principal, :examples
 
-    def preconditions
-      @preconditions || []
+    def initialize(args)
+      @preconditions  = args[:preconditions] || []
+      @actions        = args[:actions]
+      @postconditions = args[:postconditions]
+      @examples       = args[:examples] || []
+      @principal      = args[:principal]
+      [@preconditions, @actions, @postconditions, @examples, @principal].each(&:freeze)
     end
-    
-    def examples
-      @examples || []
-    end
-  
+
     def all_preconditions
       inherited_preconditions + preconditions
     end
@@ -117,11 +115,7 @@ module PPEE
     end
     
     def last_inherited_actions
-      result = inherited - first_inherited_actions
-      result.shift if fork_overriden?
-      result
-    rescue
-      []
+      has_continue_clause? ? inherited.slice(join_index, inherited.size) : []
     end
   
     def all_postconditions
@@ -152,17 +146,15 @@ module PPEE
       examples_copy = examples.dup
       placeholders = examples_copy.shift
       examples_copy.map do |example|
-        template = self.dup
-        template.preconditions  = PPEE.build_list(preconditions, placeholders, example)
-        template.actions        = PPEE.build_list(actions, placeholders, example)
-        template.postconditions = PPEE.build_list(postconditions, placeholders, example)
+        principal_args = { :preconditions  => PPEE.build_list(principal.preconditions, placeholders, example),
+                           :actions        => PPEE.build_list(principal.actions, placeholders, example),
+                           :postconditions => PPEE.build_list(principal.postconditions, placeholders, example) }
         
-        template.principal = principal.dup
-        template.principal.preconditions  = PPEE.build_list(principal.preconditions, placeholders, example)
-        template.principal.actions        = PPEE.build_list(principal.actions, placeholders, example)
-        template.principal.postconditions = PPEE.build_list(principal.postconditions, placeholders, example)
-        
-        template
+        args = { :preconditions  => PPEE.build_list(preconditions, placeholders, example),
+                 :actions        => PPEE.build_list(actions, placeholders, example),
+                 :postconditions => PPEE.build_list(postconditions, placeholders, example),
+                 :principal      => Principal.new(principal_args)  }
+        Extension.new(args)
       end
     end
 
@@ -193,21 +185,21 @@ module PPEE
     end
     
     def fork_index
-      index = PPEE.search_index(inherited, first_action)
+      index = PPEE.search_index(inherited, first_action)      
+      raise "FORK INDEX NOT FOUND= #{first_action} ... #{inherited}" if index.nil?
       index += 1 unless fork_overriden?
       index
     end
     
     def join_index
-      index = nil
-      if has_continue_clause?
-        index = last_action.blank? ? fork_index : PPEE.search_index(inherited, last_action)
-      end
+      index = last_action.blank? ? fork_index + 1 : PPEE.search_index(inherited, last_action)
+      raise "JOIN INDEX NOT FOUND= #{last_action} ... #{inherited}" if index.nil?
+      raise "JOIN INDEX OUT OF BOUNDS= #{last_action} ... #{inherited}" if index >= inherited.size
       index
     end
     
     def inherited
-      principal.actions.dup
+      principal.actions
     end
     
     def fork_overriden?
