@@ -8,7 +8,7 @@
   .box
     %strong Requerimientos
     - @use_case.requirements.each do |r|
-      %p= link_to r.name
+      %p= link_to r.name, r
     %p= link_to "Gestión de relaciones", list_requirements_path
 
 

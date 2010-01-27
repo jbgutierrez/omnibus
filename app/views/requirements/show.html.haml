@@ -21,7 +21,7 @@
   .box
     %strong Casos de uso
     - @requirement.use_cases.each do |u|
-      %p= link_to u.name
+      %p= link_to u.name, u
     %p= link_to "Gestión de relaciones", list_requirements_path
         
   .box

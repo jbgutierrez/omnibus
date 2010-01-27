@@ -59,7 +59,7 @@ module PPEE
     attr_reader :preconditions, :actions, :postconditions, :examples
 
     def initialize(args)
-      @preconditions  = args[:preconditions] || []
+      @preconditions  = args[:preconditions] || []
       @actions        = args[:actions]
       @postconditions = args[:postconditions]
       @examples       = args[:examples] || []
