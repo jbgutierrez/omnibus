@@ -1,7 +1,7 @@
 <% title "Use Cases" %>
 
 <% FunctionalArea.all.sort_by{|a| - a.use_case_diagrams.count }.each do |area| %>
-	<h3 style="clear:both;"><%= area.name %></h3>
+	<h3><%= area.name %></h3>
 	<% area.use_case_diagrams.sort_by{|d| - d.use_cases.count }.in_groups_of(2, false).each do |group| %>
 	  <% group.each do |diagram| %>
 		  <div style="width:40%;float:left" class='box'>

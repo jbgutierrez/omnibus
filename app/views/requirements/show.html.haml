@@ -1,23 +1,35 @@
 - title @requirement.name
 
-%p
-  %strong Nombre
-  %br
-  =h @requirement.name
-%p
-  %strong Estado actual
-  %br
-  =@requirement.status.humanize
-%p
-  %strong Version prevista
-  %br
-  =@requirement.version
-%p
-  %strong Descripción
-  %br
-  =h @requirement.description
+%h2= @requirement.name
+%div{:style => 'float:left; width:70%'}
+  %p
+    %strong Código
+    %br
+    =h @requirement.code
+  
+  %p
+    %strong Estado actual
+    %br
+    =@requirement.status.humanize
+  %p
+    %strong Version prevista
+    %br
+    =@requirement.version
+  %p
+    %strong Descripción
+    %br
+    =h @requirement.description
 
 .boxes
+  .box
+    %strong Opciones
+    %p
+      = link_to "Editar", edit_requirement_path(@requirement)
+      |
+      = link_to "Lista", requirements_path
+      |
+      = link_to "Eliminar", @requirement, :confirm => 'Estás seguro?', :method => :delete, :class => 'warn'
+
   .box
     %strong Casos de uso
     - @requirement.use_cases.each do |u|
@@ -31,10 +43,3 @@
       %p
         %span= @requirement.status.humanize
         %span= "hace #{time_ago_in_words(@requirement.date)}"
-
-%p
-  = link_to "Editar", edit_requirement_path(@requirement)
-  |
-  = link_to "Lista", requirements_path
-  |
-  = link_to "Eliminar", @requirement, :confirm => 'Estás seguro?', :method => :delete, :class => 'warn'

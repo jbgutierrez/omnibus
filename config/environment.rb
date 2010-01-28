@@ -29,6 +29,8 @@ Rails::Initializer.run do |config|
   config.gem 'vestal_versions'
   config.gem 'will_paginate', :version => '~> 2.3.11'
   config.gem 'searchlogic'
+  config.gem 'spreadsheet'
+  config.gem 'collectiveidea-delayed_job', :lib => 'delayed_job', :source => 'http://gems.github.com'
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).

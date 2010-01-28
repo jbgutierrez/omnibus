@@ -1,4 +1,5 @@
 - title "Requerimientos"
+- stylesheet "pagination"
 
 - form_for @search, nil, nil, :html => { :class => "formtastic" } do |f|
   %fieldset#filters
@@ -17,14 +18,21 @@
       %li
         = f.label :release_version_eq, "Version"
         = f.collection_select :release_version_eq, Requirement.release_versions, :to_s, :to_s, :include_blank => true
-      %li
+      %li{:style => "float:left;"}
         = f.submit "Buscar"
         ó
         = link_to "Nuevo", new_requirement_path
+      %li{:style => "float:right;"}
+        - spreadsheet = RequirementsSpreadsheet.spreadsheet_info_for
+        - link_to spreadsheet.url do
+          = image_tag('excel.png')
+        = "generado hace #{time_ago_in_words(spreadsheet.created_at)}"
+        %small
+          = link_to "[actualizar]", refresh_report_requirements_path
 
 = will_paginate @requirements
 
-%table
+%table.clear
   %tr
     %th Nombre
     %th Descripción
