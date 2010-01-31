@@ -1,12 +1,13 @@
 - title @use_case.name
 %h2= @use_case.name
 
-%div{:style => 'width:70%; float:left'}
-  %h3= pluralize(@use_case.ppee_test.scenarios.size, 'prueba asociada', 'pruebas asociadas')
-  #source
-    :harsh
-      #!harsh theme=sunburst
-      #{format(@use_case.test_cases)}
+- unless @use_case.ppee_test.nil?
+  %div{:style => 'width:70%; float:left'}
+    %h3= pluralize(@use_case.ppee_test.scenarios.size, 'prueba asociada', 'pruebas asociadas')
+    #source
+      :harsh
+        #!harsh theme=sunburst
+        #{format(@use_case.test_cases)}
 
 .boxes
   .box
@@ -21,13 +22,13 @@
   .box
     %strong Requerimientos
     - @use_case.requirements.each do |r|
-      %p= link_to r.name, r
+      %p= link_to truncate(r.name, 40), r
     %p= link_to "Gestión de relaciones", list_requirements_path
 
-%h3.clear Batería de pruebas de testrunner
-.box
-  - begin
-    - unless @use_case.ppee_test.nil?
+- unless @use_case.ppee_test.nil?
+  %h3.clear Batería de pruebas de testrunner
+  .box
+    - begin
       = render :partial => 'testrunner'
-  - rescue
-    %p Hubo errores en la generación de la plantilla xml
+    - rescue
+      %p Hubo errores en la generación de la plantilla xml

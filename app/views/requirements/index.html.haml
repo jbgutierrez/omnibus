@@ -41,6 +41,6 @@
     %tr
       %td= link_to truncate(requirement.name, :length => 50), requirement
       %td= h truncate(requirement.description, :length => 120 )
-      %td= h requirement.status
+      %td= h requirement.status.humanize
 
 = will_paginate @requirements

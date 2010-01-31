@@ -8,13 +8,9 @@
     =h @requirement.code
   
   %p
-    %strong Estado actual
-    %br
-    =@requirement.status.humanize
-  %p
     %strong Version prevista
     %br
-    =@requirement.version
+    =@requirement.release_version
   %p
     %strong Descripción
     %br
@@ -33,13 +29,12 @@
   .box
     %strong Casos de uso
     - @requirement.use_cases.each do |u|
-      %p= link_to u.name, u
+      %p= link_to truncate(u.name, 40), u
     %p= link_to "Gestión de relaciones", list_requirements_path
         
   .box
     %strong Histórico
-    - @requirement.version.downto(0) do |version|
-      - @requirement.revert_to(version)
+    - ([@requirement] + @requirement.versions.reverse).each do |version|
       %p
-        %span= @requirement.status.humanize
-        %span= "hace #{time_ago_in_words(@requirement.date)}"
+        %span= version.status.humanize
+        %span= "hace #{time_ago_in_words(version.date)}"

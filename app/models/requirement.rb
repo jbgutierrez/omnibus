@@ -1,49 +1,20 @@
 class Requirement < ActiveRecord::Base
   has_and_belongs_to_many :use_cases
-  versioned :if => lambda {|r| r.status_changed? and !r.new_record? }
-
-  state_machine :initial => :original, :attribute => :status do
-    event :anular do
-      transition [ any - :anulado ] => :anulado
-    end
-    event :continuar do
-      transition :original   => :detallado
-      transition :detallado  => :en_curso
-      transition :en_curso   => :en_pruebas
-      transition :en_pruebas => :finalizado
-      transition :finalizado => :implantado
-      transition :modificar  => :detallado
-    end
-    event :modificar do
-      transition :implantado => :modificado
-    end
-    event :alterar do
-      transition [ :detallado, :en_curso, :en_pruebas, :finalizado ] => :alterado
-    end
-    event :retroceder_a_detallado do
-      transition :alterado => :detallado
-    end
-    
-    event :retroceder_a_en_curso do
-      transition :alterado => :en_curso
-    end
-    event :retroceder_a_en_pruebas do
-      transition :alterado => :en_pruebas
-    end
-    event :retroceder_a_finalizado do
-      transition :alterado => :finalizado
-    end
-  end
-  
-  def state_transitions_names
-    state_transitions.map(&:to)
-  end
-  
-  def self.status_values
-    [ :original, :detallado, :en_curso, :en_pruebas, :finalizado, :implantado, :modificar, :alterado ]
-  end
+  has_many :versions, :class_name => "VersionedRequirement"
+  concerned_with :transitions
+  before_update :create_version, :if => lambda{ |r| r.status_changed? }
   
   def self.release_versions
     Requirement.all(:select => 'release_version', :group => 'release_version').reject{ |r| r.release_version.blank? }.map{ |r| r.release_version }
+  end
+  
+  def create_version
+    original_values = attributes
+    changes.keys.each do |change|
+      original_values[change] = eval "#{change}_was"
+    end
+    versioned_requirement = VersionedRequirement.new(original_values)
+    versions << versioned_requirement
+    # self.date = Time.now
   end
 end

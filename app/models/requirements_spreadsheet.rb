@@ -8,7 +8,7 @@ class RequirementsSpreadsheet < Struct.new(:filename, :url, :created_at)
     worksheet.row(0).concat %w{Código Nombre Descripción Fecha Estado Versión}
     row = 1
     Requirement.all.each do |requirement|
-      versions = requirement.versions.map{ |r| requirement.revert_to(r.number); requirement.dclone }
+      versions = requirement.versions + [ requirement ]
       versions.each do |version|
         worksheet.row(row).concat [version.code, version.name, version.description, version.date, version.status, version.release_version]
         row += 1
