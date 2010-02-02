@@ -1,11 +1,20 @@
-development:
+production:
   adapter: mysql
-  database: grammar_checker 
+  database: omnibus-pro
   host: 127.0.0.1
   username: root
   password:
 
-test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  timeout: 5000
+development:
+  adapter: mysql
+  database: omnibus-des
+  host: 127.0.0.1
+  username: root
+  password:
+
+redmine:
+  adapter: mysql
+  database: redmine
+  host: 127.0.0.1
+  username: root
+  password: 

@@ -54,3 +54,5 @@ Rails::Initializer.run do |config|
 end
 
 Harsh.enable_haml
+
+APP_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/config.yml")[RAILS_ENV]

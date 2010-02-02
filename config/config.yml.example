@@ -1,0 +1,5 @@
+development:
+  redmine_url: http://localhost/redmine_des
+
+production:
+  redmine_url: https://localhost/redmine

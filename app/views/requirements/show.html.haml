@@ -14,7 +14,7 @@
   %p
     %strong Descripción
     %br
-    =h @requirement.description
+    = nl2br(@requirement.description)
 
 .boxes
   .box
@@ -31,7 +31,12 @@
     - @requirement.use_cases.each do |u|
       %p= link_to truncate(u.name, 40), u
     %p= link_to "Gestión de relaciones", list_requirements_path
-        
+
+  .box
+    %strong Peticiones relacionadas
+    - issues_for([@requirement]).each do |link|
+      %p= link
+
   .box
     %strong Histórico
     - ([@requirement] + @requirement.versions.reverse).each do |version|
