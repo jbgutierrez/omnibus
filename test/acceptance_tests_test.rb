@@ -185,6 +185,8 @@ EOS
     Cuando hago la acción 1
     # comment
     Y hago la acción 2
+    | 11 | 12 | 13 | 14 |
+    | 21 | 22 |    | 24 |
     # comment
     Entonces ocurre la postcondición 1
     # comment
@@ -211,7 +213,7 @@ EOS
       :actors => "actor",
       :principal => {
          :preconditions => ["se cumple la precondición 1", "se cumple la precondición 2"],
-         :actions => ["hago la acción 1", "hago la acción 2"],
+         :actions => ["hago la acción 1", "hago la acción 2: 11(12, 13, 14), 21(22, 24)" ],
          :postconditions => ["ocurre la postcondición 1", "ocurre la postcondición 2"],
          :examples => [ ['actores', 'acciones'], ['actor 2', 'acción 2'] ] 
        },
@@ -225,11 +227,10 @@ EOS
     assert_equal expected, parse(input)    
   end
   
-  # def test_example_files
-  #   examples_path = File.dirname(__FILE__) + '/examples/'
-  #   Dir.entries(examples_path).grep(/.*test/).each do |example|
-  #     assert_not_nil parse_file(examples_path + example)
-  #   end
-  # end
+  def test_database_tests
+    UseCase.all.each do |use_case|
+      assert_not_nil parse(use_case.test_cases) unless use_case.test_cases.nil?
+    end
+  end
 
 end

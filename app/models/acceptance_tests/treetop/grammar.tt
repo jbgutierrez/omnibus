@@ -126,9 +126,18 @@ module PPEE
 	  end
 
 	  rule step
-	    comment space* "Y" space line_to_eol eol? comment {
+	    comment space* "Y" space line_to_eol eol? table:table? comment {
 	      def build
-	        line_to_eol.text_value
+          result = line_to_eol.text_value
+					unless table.empty?
+					  result << ': '
+					  result << table.build.map do |row|
+					    cell = row.shift
+					    remaining_cells = row.reject(&:blank?).join(', ')
+					    remaining_cells.blank? ? cell : "#{cell}(#{remaining_cells})"
+					  end.join(', ')
+		      end
+		      result
 	      end
 	    }
 	  end

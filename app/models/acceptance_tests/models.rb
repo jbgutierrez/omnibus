@@ -192,7 +192,7 @@ module PPEE
     end
     
     def join_index
-      index = last_action.blank? ? fork_index + 1 : PPEE.search_index(inherited, last_action)
+      index = last_action.blank? ? fork_index : PPEE.search_index(inherited, last_action)
       raise "JOIN INDEX NOT FOUND= #{last_action} ... #{inherited}" if index.nil?
       raise "JOIN INDEX OUT OF BOUNDS= #{last_action} ... #{inherited}" if index >= inherited.size
       index
