@@ -165,6 +165,10 @@ EOS
 
     # comment
     Dado que se cumple la precondición 1
+    | 11 |    | 13 |    |
+    | 21 | 22 |    | 24 |
+    | 31 |    |    |    |
+    |    |    |    | 44 |
     # comment
     Y se cumple la precondición 2
     # comment
@@ -185,6 +189,10 @@ EOS
     
     # comment
     Si hago la acción 1'
+    | 11 |    | 13 |    |
+    | 21 | 22 |    | 24 |
+    | 31 |    |    |    |
+    |    |    |    | 44 |
     # comment
     Y hago la acción 2'
     # comment
@@ -197,8 +205,8 @@ EOS
     expected = {
       :actors => "actor",
       :principal => {
-         :preconditions => ["se cumple la precondición 1", "se cumple la precondición 2"],
-         :actions => ["hago la acción 1", "hago la acción 2: 11(12, 13, 14), 21(22, 24)" ],
+         :preconditions => ["se cumple la precondición 1: 11(13), 21(22, 24), 31 y (44)", "se cumple la precondición 2"],
+         :actions => ["hago la acción 1", "hago la acción 2: 11(12, 13, 14) y 21(22, 24)" ],
          :postconditions => ["ocurre la postcondición 1", "ocurre la postcondición 2"],
          :examples => [ ['actores', 'acciones'], ['actor 2', 'acción 2'] ] 
        },

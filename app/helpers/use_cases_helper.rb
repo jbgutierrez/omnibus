@@ -13,23 +13,15 @@ module UseCasesHelper
   def format(content)
     indentation = 0
     formatted_content = content.split("\n").map do |line|
-      indentation, formatted_text = case line.strip
-        when /^(Test:|Actores:|Dado que no|Dado que|Si no|Si|Cuando|Entonces no|Entonces tambien|Entonces también no|Entonces)(.*)/
-          formatted_text = $1 + $2
-          formatted_text = "\n" + formatted_text unless indentation == 0
-          [ 0,  formatted_text ]
-        when /^(Y no|Y)(.*)/
-          [ 2, $1 + $2 ]
-        when /^(Ejemplos:)/
-          [ 4, $1 ]
-        when /^(\|)(.*)/
-          [ 6, $1 + $2 ]
-        when /^[ \t]*$/
-          next
-        else
-          [ indentation, line.strip ]
+      indentation = case line
+        when /^\s*(Actores:|Dado que|Si|Cuando|Entonces).*/ : 0
+        when /^\s*Y.*/                                      : 2
+        when /^\s*Ejemplos:/                                : 4
+        when /^\s*\|.*/                                     : 6
+        when /^\s*$/                                        : next
+        else                                                  indentation
       end
-      (" " * indentation) + formatted_text
+      (" " * indentation) + ($& || line).strip
     end.compact
     align(formatted_content).join("\n")
   end

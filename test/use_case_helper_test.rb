@@ -24,8 +24,6 @@ eol
   def test_format
     input =<<eol
   # comment
-Test: nombre del test
-  # comment
   Actores: actor
 
        # comment
@@ -64,20 +62,16 @@ eol
     
     expected =<<eol
 # comment
-Test: nombre del test
-# comment
 Actores: actor
 # comment
 Dado que se cumple la precondición 1
 # comment
   Y se cumple la precondición 2
   # comment
-
 Cuando hago la acción 1
 # comment
   Y hago la acción 2
   # comment
-
 Entonces ocurre la postcondición 1
 # comment
   Y ocurre la postcondición 2
@@ -87,13 +81,11 @@ Entonces ocurre la postcondición 1
       | actor 2 | acción 2 |
       | actor 3 | acción 3 |
       # comment
-
 Si hago la acción 1'
 # comment
   Y hago la acción 2'
   # comment
   Y continuo
-
 Entonces ocurre la postcondición 1'
 # comment
   Y ocurre la postcondición 2'

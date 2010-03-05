@@ -7,6 +7,19 @@ module PPEE
         def build
 	        elements.map{|e| e.build }
         end
+        def	humanize
+          result = ''
+				  unless elements.empty?
+				    result << ': '
+				    result << elements.map do |element|
+				      row = element.build
+				      cell = row.shift
+				      remaining_cells = row.reject(&:blank?).join(', ')
+				      remaining_cells.blank? ? cell : "#{cell}(#{remaining_cells})"
+				    end.to_sentence
+	        end
+	        result
+	      end
       }
     end
 
