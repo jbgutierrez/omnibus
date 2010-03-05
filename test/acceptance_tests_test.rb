@@ -17,14 +17,12 @@ class ParserTest < Test::Unit::TestCase
     
   def test_smallest_test
     input =<<EOS
-    Test: nombre del test
     Actores: actores
     
     Cuando hago esto
     Entonces ocurre esto
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "actores",
       :principal => {
          :actions => ["hago esto"],
@@ -36,7 +34,6 @@ EOS
 
   def test_examples
     input =<<EOS
-    Test: nombre del test
     Actores: <actores>
 
     Cuando hago esto
@@ -47,7 +44,6 @@ EOS
         | actor 2 | acción 2 |
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "<actores>",
       :principal => {
          :actions => ["hago esto"],
@@ -60,7 +56,6 @@ EOS
   
   def test_precondition
     input =<<EOS
-    Test: nombre del test
     Actores: actor
 
     Dado que se cumple esto
@@ -68,7 +63,6 @@ EOS
     Entonces ocurre esto
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "actor",
       :principal => {
          :preconditions => ["se cumple esto"],
@@ -81,7 +75,6 @@ EOS
   
   def test_smallest_extension
     input =<<EOS
-    Test: nombre del test
     Actores: actor
 
     Cuando hago esto
@@ -91,7 +84,6 @@ EOS
     Entonces ocurre esto otro
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "actor",
       :principal => {
         :actions => ["hago esto"],
@@ -109,7 +101,6 @@ EOS
 
   def test_extension_examples
     input =<<EOS
-    Test: nombre del test
     Actores: <actores>
 
     Cuando hago esto
@@ -123,7 +114,6 @@ EOS
       | actor 2 | acción 2 |
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "<actores>",
       :principal => {
         :actions => ["hago esto"],
@@ -142,7 +132,6 @@ EOS
 
   def test_precondition_for_extension
     input =<<EOS
-    Test: nombre del test
     Actores: actor
 
     Cuando hago esto
@@ -153,7 +142,6 @@ EOS
     Entonces ocurre esto otro
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "actor",
       :principal => {
         :actions => ["hago esto"],
@@ -172,8 +160,6 @@ EOS
   
   def test_steps_and_comments
     input =<<EOS
-    # comment
-    Test: nombre del test
     # comment
     Actores: actor
 
@@ -209,7 +195,6 @@ EOS
     # comment
 EOS
     expected = {
-      :test => "nombre del test",
       :actors => "actor",
       :principal => {
          :preconditions => ["se cumple la precondición 1", "se cumple la precondición 2"],

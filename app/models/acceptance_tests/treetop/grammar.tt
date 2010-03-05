@@ -5,24 +5,15 @@ module PPEE
 	  include Table
 
 	  rule root
-	    test actors white principal extensions {
+	    actors white principal extensions {
 	      def build
 	        result =
 	          {
-	            :test => test.build,
 	            :actors => actors.build,
 	            :principal => principal.build
 	          }
 	        result[:extensions] = extensions.build unless extensions.empty?
 	        result
-	      end
-	    }
-	  end
-
-	  rule test
-	    comment space* 'Test:' space line_to_eol eol? {
-	      def build
-	        line_to_eol.text_value
 	      end
 	    }
 	  end
