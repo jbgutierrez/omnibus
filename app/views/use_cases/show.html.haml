@@ -1,6 +1,5 @@
 - title @use_case.name
 %h2= @use_case.name
-
 - unless @use_case.ppee_test.nil?
   %div
     %h3{:style => 'float:left;'}= pluralize(@use_case.ppee_test.scenarios.size, 'prueba asociada', 'pruebas asociadas')
@@ -18,7 +17,8 @@
       = link_to "Listado", use_cases_path
       |
       = link_to "Eliminar", @use_cases, :confirm => 'Estás seguro?', :method => :delete, :style => 'color:red;'
-
+    %p
+      %small= "actualizado hace #{time_ago_in_words(@use_case.updated_at)}"
   .box
     %strong Requerimientos
     - @use_case.requirements.each do |r|
