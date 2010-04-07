@@ -25,7 +25,7 @@ Rails::Initializer.run do |config|
   config.gem 'chriseppstein-compass', :lib => 'compass'
   config.gem 'haml', :lib => 'haml', :version => '>=2.2.0'
   config.gem 'justinfrench-formtastic', :lib => 'formtastic'
-  config.gem 'inherited_resources'
+  config.gem 'inherited_resources', :version => '1.0.3'
   # wget http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.8.0.tar.gz
   # gem install -r ultraviolet --include-dependencies
   config.gem 'state_machine'

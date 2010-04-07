@@ -1,3 +1,4 @@
+# coding: utf-8
 namespace :ppee do
   desc "Importa los datos del modelo de rsa"
   task :import_use_cases_from_xml, [:input_file] => :environment do |t, args|
@@ -94,18 +95,18 @@ namespace :ppee do
     
     translate_status = lambda do |str|
       case str
-        when "Original": :original
-        when "Aceptado": :original
-        when "Detallado": :detallado
-        when "En curso": :en_curso
-        when "En pruebas": :en_pruebas
-        when "Finalizado": :finalizado
-        when "Anulado": :anulado
-        when "Anulado*:\rSe determina que no tiene sentido\r": :anulado
-        when "Diferido": :modificado
-        when "Implantado": :implantado
-        when "Alterado": :alterado
-        when "Modificado": :modificado
+        when "Original"; :original
+        when "Aceptado"; :original
+        when "Detallado"; :detallado
+        when "En curso"; :en_curso
+        when "En pruebas"; :en_pruebas
+        when "Finalizado"; :finalizado
+        when "Anulado"; :anulado
+        when "Anulado*:\rSe determina que no tiene sentido\r"; :anulado
+        when "Diferido"; :modificado
+        when "Implantado"; :implantado
+        when "Alterado"; :alterado
+        when "Modificado"; :modificado
       end
     end
     

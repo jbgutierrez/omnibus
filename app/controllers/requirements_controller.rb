@@ -9,9 +9,9 @@ class RequirementsController < InheritedResources::Base
       @use_case = UseCase.find(params[:use_case_id])
       @requirement = Requirement.find(params[:requirement_id])
       case params[:list_action]
-        when 'add':
+        when 'add';
           @use_case.requirements << @requirement unless @use_case.requirements.include?(@requirement)
-        when 'destroy'
+        when 'destroy';
           @use_case.requirements.delete(@requirement) if @use_case.requirements.include?(@requirement)
       end
     end

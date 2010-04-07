@@ -14,11 +14,11 @@ module UseCasesHelper
     indentation = 0
     formatted_content = content.split("\n").map do |line|
       indentation = case line
-        when /^\s*(Actores:|Dado que|Si|Cuando|Entonces).*/ : 0
-        when /^\s*Y.*/                                      : 2
-        when /^\s*Ejemplos:/                                : 4
-        when /^\s*\|.*/                                     : 6
-        when /^\s*$/                                        : next
+        when /^\s*(Actores:|Dado que|Si|Cuando|Entonces).*/ ; 0
+        when /^\s*Y.*/                                      ; 2
+        when /^\s*Ejemplos:/                                ; 4
+        when /^\s*\|.*/                                     ; 6
+        when /^\s*$/                                        ; next
         else                                                  indentation
       end
       (" " * indentation) + ($& || line).strip

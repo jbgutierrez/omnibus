@@ -1,3 +1,4 @@
+# coding: utf-8
 class RequirementsSpreadsheet < Struct.new(:filename, :url, :created_at)
   
   def self.refresh(filename = DEFAULT_FILENAME)
