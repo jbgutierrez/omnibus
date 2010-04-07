@@ -14,7 +14,7 @@ class ParserTest < Test::Unit::TestCase
   def parse_file(path)
     @parser.parse_file(path)
   end
-    
+
   def test_smallest_test
     input =<<EOS
     Actores: actores
@@ -25,6 +25,25 @@ EOS
     expected = {
       :actors => "actores",
       :principal => {
+         :actions => ["hago esto"],
+         :postconditions => ["ocurre esto"]
+       }
+    }
+    assert_equal expected, parse(input)
+  end
+
+  def test_alias
+    input =<<EOS
+    Actores: actores
+
+    Alias: alias
+    Cuando hago esto
+    Entonces ocurre esto
+EOS
+    expected = {
+      :actors => "actores",
+      :principal => {
+         :aliases => "alias",
          :actions => ["hago esto"],
          :postconditions => ["ocurre esto"]
        }
@@ -54,24 +73,25 @@ EOS
     assert_equal expected, parse(input)
   end
   
-  def test_precondition
-    input =<<EOS
-    Actores: actor
-
-    Dado que se cumple esto
-    Cuando hago esto
-    Entonces ocurre esto
-EOS
-    expected = {
-      :actors => "actor",
-      :principal => {
-         :preconditions => ["se cumple esto"],
-         :actions => ["hago esto"],
-         :postconditions => ["ocurre esto"]
-       }
-    }
-    assert_equal expected, parse(input)    
-  end
+#   def test_precondition
+#     input =<<EOS
+#     Actores: actor
+#
+#     Dado que se cumple esto
+#     Cuando hago esto
+#     Entonces ocurre esto
+# EOS
+#     expected = {
+#       :actors => "actor",
+#       :principal => {
+#          :preconditions => ["se cumple esto"],
+#          :actions => ["hago esto"],
+#          :postconditions => ["ocurre esto"]
+#        }
+#     }
+#
+#     assert_equal expected, parse(input)
+#   end
   
   def test_smallest_extension
     input =<<EOS
@@ -222,7 +242,10 @@ EOS
   
   def test_database_tests
     UseCase.all.each do |use_case|
-      assert_not_nil parse(use_case.test_cases) unless use_case.test_cases.nil?
+      time = Benchmark.realtime do
+        assert_not_nil parse(use_case.test_cases) unless use_case.test_cases.nil?
+      end
+      puts( use_case.name + ": " + time.to_s ) if time > 3.0
     end
   end
 

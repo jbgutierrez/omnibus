@@ -27,9 +27,10 @@ module PPEE
 	  end
 
 	  rule principal
-	    p:preconditions? actions postconditions examples:examples? {
+	    aliases:aliases? p:preconditions? actions postconditions examples:examples? {
 	      def build
 	        result = {}
+          result[:aliases]        = aliases.build unless aliases.empty?
 	        result[:preconditions]  = p.build if p.respond_to?(:build)
 	        result[:actions]        = actions.build
 	        result[:postconditions] = postconditions.build
@@ -38,6 +39,14 @@ module PPEE
 	      end
 	    }
 	  end
+
+    rule aliases
+	    comment space* 'Alias:' space line_to_eol eol? {
+	      def build
+	        line_to_eol.text_value
+	      end
+	    }
+    end
 
 	  rule extensions
 	    extension* {

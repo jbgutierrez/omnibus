@@ -7,7 +7,13 @@ module PPEE
 
   def self.build_list(list, keys, values)
     list.map do |original|
-      item = original.dup
+      build_item(original, keys, values)
+    end.compact
+  end
+
+  def self.build_item(original, keys, values)
+    item = original.dup
+    if item =~ /<[^>]+>/
       placeholders = item.scan(/<[^>]+>/)
       placeholders.each do |placeholder|
         placeholder.delete! '<'
@@ -25,8 +31,8 @@ module PPEE
           item.gsub!("<#{placeholder}?>", '')
         end
       end
-      item
-    end.compact
+    end
+    item
   end
 
   class Test
@@ -56,14 +62,15 @@ module PPEE
   end
 
   class Principal
-    attr_reader :preconditions, :actions, :postconditions, :examples
+    attr_reader :aliases, :preconditions, :actions, :postconditions, :examples
 
     def initialize(args)
+      @aliases        = args[:aliases] || ''
       @preconditions  = args[:preconditions] || []
       @actions        = args[:actions]
       @postconditions = args[:postconditions]
       @examples       = args[:examples] || []
-      [@preconditions, @actions, @postconditions, @examples].each(&:freeze)
+      [@preconditions, @aliases, @actions, @postconditions, @examples].each(&:freeze)
     end
     
     def principal_examples
@@ -74,6 +81,7 @@ module PPEE
         args = { :preconditions  => PPEE.build_list(preconditions, placeholders, example),
                  :actions        => PPEE.build_list(actions, placeholders, example),
                  :postconditions => PPEE.build_list(postconditions, placeholders, example) }
+        args[:aliases] = PPEE.build_item(aliases, placeholders, example) unless aliases.blank?
         Principal.new(args)
       end
     end
@@ -89,6 +97,10 @@ module PPEE
       @examples       = args[:examples] || []
       @principal      = args[:principal]
       [@preconditions, @actions, @postconditions, @examples, @principal].each(&:freeze)
+    end
+
+    def aliases
+      principal.aliases
     end
 
     def all_preconditions
@@ -149,6 +161,7 @@ module PPEE
         principal_args = { :preconditions  => PPEE.build_list(principal.preconditions, placeholders, example),
                            :actions        => PPEE.build_list(principal.actions, placeholders, example),
                            :postconditions => PPEE.build_list(principal.postconditions, placeholders, example) }
+        principal_args[:aliases] = PPEE.build_item(principal.aliases, placeholders, example) unless principal.aliases.blank?
         
         args = { :preconditions  => PPEE.build_list(preconditions, placeholders, example),
                  :actions        => PPEE.build_list(actions, placeholders, example),
