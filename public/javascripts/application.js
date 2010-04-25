@@ -20,3 +20,10 @@ $(document).ready(function() {
 		  tab.addClass('selected');
 	});
 });
+
+function submitTo(path, method){
+  var form =$('form');
+  form.attr('action', path);
+  form.attr('method', method);
+  form.submit();
+}

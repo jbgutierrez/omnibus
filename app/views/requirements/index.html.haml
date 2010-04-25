@@ -2,6 +2,7 @@
 - stylesheet "pagination"
 
 - form_for @search, nil, nil, :html => { :class => "formtastic" } do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
   %fieldset#filters
     %legend Filtros
     %ol
@@ -30,17 +31,19 @@
         %small
           = link_to "[actualizar]", refresh_report_requirements_path
 
-= will_paginate @requirements
-
-%table.clear
-  %tr
-    %th Nombre
-    %th Descripción
-    %th Estado
-  - for requirement in @requirements
-    %tr
-      %td= link_to truncate(requirement.name, :length => 50), requirement
-      %td= h truncate(requirement.description, :length => 120 )
-      %td= h requirement.status.humanize
-
-= will_paginate @requirements
+  - unless @requirements.empty?
+    = will_paginate @requirements
+    
+    %table.clear
+      %tr
+        %th Nombre
+        %th Descripción
+        %th Estado
+      - for requirement in @requirements
+        %tr
+          %td= link_to truncate(requirement.name, :length => 50), requirement
+          %td= h truncate(requirement.description, :length => 120 )
+          %td= h requirement.status.humanize
+    
+    = link_to_function "Edición Múltiple", "submitTo('#{edit_multiple_requirements_path}', 'post')"
+    = will_paginate @requirements

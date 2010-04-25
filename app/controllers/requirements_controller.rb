@@ -19,7 +19,33 @@ class RequirementsController < InheritedResources::Base
   
   def refresh_report
     RequirementsSpreadsheet.send_later(:refresh)
-    flash[:notice] = "Se esta regenerando el fichero excel."
+    flash[:notice] = "Se está regenerando el fichero excel."
     redirect_to requirements_url
+  end
+  
+  def edit_multiple
+    @search = Requirement.search params[:search]
+    @requirements = @search.all
+    if @requirements.empty?
+      flash[:notice] = "No hay nada que editar!"
+      redirect_to requirements_path
+    else
+      @requirement = Requirement.new
+      versions = @requirements.map(&:release_version).uniq
+      @requirement.release_version = versions.first unless versions.size > 1
+      status = @requirements.map(&:status).uniq
+      @requirement.status = status.size > 1 ? nil : status.first
+      date = @requirements.map(&:date).uniq
+      @requirement.date = date.first unless date.size > 1
+    end
+  end
+  
+  def update_multiple
+    @requirements = Requirement.find(params[:requirement_ids])
+    @requirements.each do |requirement|
+      requirement.update_attributes!(params[:requirement].reject {|k,v| v.blank? })
+    end
+    flash[:success] = "La operación se realizó satisfactoriamente"
+    redirect_to requirements_path
   end
 end

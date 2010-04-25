@@ -1,0 +1,34 @@
+- title "Edición Múltiple"
+- form_for :requirement, :url => update_multiple_requirements_path, :html => { :method => :put, :class => "formtastic"  } do |f|
+  %fieldset.inputs
+    %ol
+      %li
+        %label Release version
+        - if @requirement.release_version.nil?
+          %label * Múltiples valores *
+        - else
+          = f.text_field :release_version
+      %li
+        %label Status
+        - if @requirement.status.nil?
+          %label * Múltiples valores *
+        - else
+          = f.select :status, [ @requirement.status ] + @requirement.state_transitions_names, :include_blank => true
+      %li
+        %label Date
+        - if @requirement.date.nil?
+          %label * Múltiples valores *
+        - else
+          = f.date_select :date
+    = f.submit
+    ó
+    = link_to "Cancelar", requirements_path, :class => 'warn'
+
+  %div
+    %h3= "Editando " + pluralize(@requirements.count, "requerimiento")
+    %ul
+    - for requirement in @requirements
+      %li= requirement.name
+      = hidden_field_tag "requirement_ids[]", requirement.id
+
+  
