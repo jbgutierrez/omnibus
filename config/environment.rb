@@ -34,6 +34,7 @@ Rails::Initializer.run do |config|
   config.gem 'searchlogic'
   config.gem 'spreadsheet'
   config.gem 'collectiveidea-delayed_job', :lib => 'delayed_job', :source => 'http://gems.github.com'
+  config.gem 'RedCloth'
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).

@@ -14,7 +14,7 @@
   %p
     %strong Descripción
     %br
-    = nl2br(@requirement.description)
+    = RedCloth.new(@requirement.description).to_html
 
 .boxes
   .box
