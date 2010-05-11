@@ -18,7 +18,7 @@
       |
       = link_to "Eliminar", @use_cases, :confirm => 'Estás seguro?', :method => :delete, :style => 'color:red;'
     %p
-      %small= "actualizado hace #{time_ago_in_words(@use_case.updated_at)}"
+      %small= "actualizado hace #{time_ago_in_words(@use_case.updated_at)} por #{@use_case.updated_by.login}"
   .box
     %strong Requerimientos
     - @use_case.requirements.each do |r|

@@ -4,6 +4,7 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_user
+  include Userstamp
 
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -13,13 +14,17 @@ class ApplicationController < ActionController::Base
     session[:user]
   end
   
-  before_filter :authenticate, :unless => :development?
+  before_filter :authenticate
 
   private
 
   def authenticate
-    authenticate_or_request_with_http_basic do |username, password|
-      session[:user] ||= User.try_to_login(username, password)
+    unless development?
+      authenticate_or_request_with_http_basic do |username, password|
+        session[:user] ||= User.try_to_login(username, password)
+      end
+    else
+      session[:user] ||= User.find(1)
     end
   end
   

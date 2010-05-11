@@ -1,8 +1,12 @@
 class Requirement < ActiveRecord::Base
+  stampable
   validates_presence_of :code, :name, :status, :release_version, :date, :description
   
   has_and_belongs_to_many :use_cases
   has_many :versions, :class_name => "VersionedRequirement"
+  belongs_to :created_by, :class_name => "User", :foreign_key => "creator_id"
+  belongs_to :updated_by, :class_name => "User", :foreign_key => "updater_id"
+  
   concerned_with :transitions
   before_update :create_version, :if => lambda{ |r| r.status_changed? }
   

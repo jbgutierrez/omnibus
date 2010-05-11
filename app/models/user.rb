@@ -1,6 +1,7 @@
 require "digest/sha1"
 class User < ActiveRecord::Base
   establish_connection :redmine
+  model_stamper
   
   def self.try_to_login(login, password)
     !password.blank? && first(:conditions => ["login=? and hashed_password=?", login, hash_password(password)])
