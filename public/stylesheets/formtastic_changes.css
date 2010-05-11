@@ -13,3 +13,43 @@ form.formtastic fieldset ol li p.inline-hints {
 	font-style: italic;
 	font-size: 8px;
 }
+
+/* FIELDSETS & LISTS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset.buttons { padding-left:0%; }
+
+/* LABELS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li label { float:none; }
+
+/* NESTED FIELDSETS AND LEGENDS (radio, check boxes and date/time inputs use nested fieldsets)
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li fieldset legend { width:99%; }
+form.formtastic fieldset ol li fieldset ol { width:99%; padding:0 0 0 0; }
+
+/* INLINE HINTS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li p.inline-hints { margin:0.5em 0 0 0; }
+
+/* INLINE ERRORS
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li p.inline-errors { margin:0.5em 0 0 0; }
+form.formtastic fieldset ol li ul.errors { margin:0.5em 0 0 0;; }
+
+
+/* STRING & NUMERIC OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li.string input { width:99%; }
+form.formtastic fieldset ol li.password input { width:99%; }
+form.formtastic fieldset ol li.numeric input { width:99;%; }
+
+
+/* TEXTAREA OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li.text textarea { width:99%; }
+
+
+/* BOOLEAN OVERRIDES
+--------------------------------------------------------------------------------------------------*/
+form.formtastic fieldset ol li.boolean label { padding-left:0%; }
+form.formtastic fieldset ol li.boolean label input { margin:0 0.5em 0 0.2em; }

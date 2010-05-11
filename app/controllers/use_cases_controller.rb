@@ -1,12 +1,4 @@
 class UseCasesController < InheritedResources::Base
-  def update
-    super do
-      unless @use_case.errors.empty?
-        flash.now[:error] = @use_case.errors.on_base
-      end      
-    end
-  end
-  
   def export_tests
     config = Rails::Configuration.new
     name = config.database_configuration[RAILS_ENV]["database"].upcase

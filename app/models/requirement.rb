@@ -1,4 +1,6 @@
 class Requirement < ActiveRecord::Base
+  validates_presence_of :code, :name, :status, :release_version, :date, :description
+  
   has_and_belongs_to_many :use_cases
   has_many :versions, :class_name => "VersionedRequirement"
   concerned_with :transitions
