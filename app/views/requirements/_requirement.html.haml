@@ -2,7 +2,7 @@
   = f.inputs :code, :name, :description, :release_version
   - f.inputs do
     = f.input :status, :as => :select, :collection => [ @requirement.status ] + @requirement.state_transitions_names
-    = f.input :date
+    = f.text_field :date, :class => :calendar
   = f.submit
   ó
   = link_to "Cancelar", @requirement, :class => 'warn'
