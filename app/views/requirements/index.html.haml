@@ -5,20 +5,25 @@
   = hidden_field_tag :authenticity_token, form_authenticity_token
   %fieldset#filters
     %legend Filtros
-    %ol
+    %div{:style => 'float:right;'}
+      #chart
+      %script
+        = "loadChart(#{@chart_data.delete("\n")}, '#chart')"
+    %ol{:style => 'overflow:hidden'}
       %li
         = f.label :name_like, "Nombre"
         = f.text_field :name_like
       %li
         = f.label :description_like, "Descripción"
         = f.text_field :description_like
-    %ol
       %li
         = f.label :status_eq, "Estado"
         = f.collection_select :status_eq, Requirement.status_values, :to_s, :to_s, :include_blank => true
       %li
         = f.label :release_version_eq, "Version"
         = f.collection_select :release_version_eq, Requirement.release_versions, :to_s, :to_s, :include_blank => true
+
+    %ol{:style => 'clear:both'}
       %li{:style => "float:left;"}
         = f.submit "Buscar"
         ó

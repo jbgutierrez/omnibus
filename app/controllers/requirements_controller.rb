@@ -1,7 +1,19 @@
 class RequirementsController < InheritedResources::Base
   def index
-    @search = Requirement.search params[:search]
+    @search       = Requirement.search params[:search]
     @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
+    hash          = @search.count(:group => 'status')
+    data          = hash.values.inspect
+    labels        = hash.keys.map{ |k| "#{k.humanize} (#{hash[k]})"}.inspect
+    @chart_data =<<eol
+{
+  data        : #{data},
+  axis_labels : #{labels},
+  size        : '400x250',
+  type        : 'p',
+  bg          : '000'
+}
+eol
   end
   
   def list

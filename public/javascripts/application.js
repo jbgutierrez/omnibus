@@ -48,3 +48,9 @@ function submitTo(path, method){
   form.attr('method', method);
   form.submit();
 }
+
+function loadChart(data, target)
+{
+  var api = new jGCharts.Api(); 
+  jQuery('<img>').attr('src', api.make(data)).appendTo(target);
+}
