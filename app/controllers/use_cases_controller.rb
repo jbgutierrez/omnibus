@@ -1,4 +1,7 @@
 class UseCasesController < InheritedResources::Base
+  caches_action :index, :layout => false
+  cache_sweeper :use_case_sweeper, :only => [ :create, :update, :destroy ]
+  
   def export_tests
     config = Rails::Configuration.new
     name = config.database_configuration[RAILS_ENV]["database"].upcase

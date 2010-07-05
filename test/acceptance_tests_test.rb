@@ -233,7 +233,7 @@ EOS
        },
        :extensions => [
          {
-           :actions => ["hago la acción 1'", "hago la acción 2'", "continuo"],
+           :actions => ["hago la acción 1': 11(13), 21(22, 24), 31 y (44)", "hago la acción 2'", "continuo"],
            :postconditions => ["ocurre la postcondición 1'", "ocurre la postcondición 2'"]
          }
        ]

@@ -1,4 +1,5 @@
 class RequirementsController < InheritedResources::Base
+  
   def index
     @search       = Requirement.search params[:search]
     @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'

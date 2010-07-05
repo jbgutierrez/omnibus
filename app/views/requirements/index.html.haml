@@ -11,6 +11,9 @@
         = "loadChart(#{@chart_data.delete("\n")}, '#chart')"
     %ol{:style => 'overflow:hidden'}
       %li
+        = f.label :code_like, "Codigo"
+        = f.text_field :code_like
+      %li
         = f.label :name_like, "Nombre"
         = f.text_field :name_like
       %li

@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   end
   
   def development?
-    ENV["RAILS_ENV"] = "development"
+    ENV["RAILS_ENV"] == "development"
   end
   
 end

@@ -90,9 +90,9 @@ module PPEE
 	  end
 
 	  rule actions_for_extension
-	    comment space* "Si" space first_step:line_to_eol eol? steps comment {
+	    comment space* "Si" space first_step:line_to_eol eol? table:table? steps comment {
 	      def build
-	        result = [ first_step.text_value ]
+	        result = [ first_step.text_value + table.humanize ]
 	        result += steps.build
 	        result
 	      end
