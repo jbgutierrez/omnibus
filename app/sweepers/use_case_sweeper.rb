@@ -12,7 +12,6 @@ class UseCaseSweeper < ActionController::Caching::Sweeper
   private
 
   def clear_use_cases_cache(use_case)
-    expire_action :controller => :use_cases, :action => :index
     expire_fragment "#{use_case.id}-testrunner"
     expire_fragment "#{use_case.id}-ppee_test"
   end

@@ -1,13 +1,13 @@
 <% title "Use Cases" %>
 
-<% FunctionalArea.all.sort_by{|a| - a.use_case_diagrams.count }.each do |area| %>
+<% @functional_areas.sort_by{|a| - a.use_case_diagrams.size }.each do |area| %>
 	<h3><%= area.name %></h3>
-	<% area.use_case_diagrams.sort_by{|d| - d.use_cases.count }.in_groups_of(2, false).each do |group| %>
+	<% area.use_case_diagrams.sort_by{|d| - d.use_cases.size }.in_groups_of(2, false).each do |group| %>
 	  <% group.each do |diagram| %>
 		  <div style="width:40%;float:left" class='box'>
 				<strong><%= diagram.name %></strong>
 				<ul style='list-style-type:none;'>
-					<% diagram.use_cases.all.sort_by{|u| u.updated_at}.each do |use_case| %>
+					<% diagram.use_cases.sort_by{|u| u.updated_at}.each do |use_case| %>
 					  <% @style = "text-decoration: none;"
 					     @style += 'color:red' if use_case.test_cases.nil? %>
 						<li>

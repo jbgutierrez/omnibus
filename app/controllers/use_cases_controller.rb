@@ -1,6 +1,9 @@
 class UseCasesController < InheritedResources::Base
-  caches_action :index, :layout => false
   cache_sweeper :use_case_sweeper, :only => [ :create, :update, :destroy ]
+
+  def index
+    @functional_areas = FunctionalArea.all(:include => { :use_case_diagrams => :use_cases })
+  end
   
   def export_tests
     config = Rails::Configuration.new
