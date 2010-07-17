@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20100717055206
+#
+# Table name: use_cases
+#
+#  id                  :integer(4)      not null, primary key
+#  name                :string(255)
+#  test_cases          :text(2147483647
+#  use_case_diagram_id :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  creator_id          :integer(4)
+#  updater_id          :integer(4)
+#
+
 require 'acceptance_tests'
 
 class UseCase < ActiveRecord::Base

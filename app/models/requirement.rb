@@ -1,3 +1,21 @@
+# == Schema Information
+# Schema version: 20100717055206
+#
+# Table name: requirements
+#
+#  id              :integer(4)      not null, primary key
+#  code            :string(255)
+#  name            :string(255)
+#  status          :string(255)
+#  release_version :string(255)
+#  date            :date
+#  description     :text
+#  created_at      :datetime
+#  updated_at      :datetime
+#  creator_id      :integer(4)
+#  updater_id      :integer(4)
+#
+
 class Requirement < ActiveRecord::Base
   stampable
   validates_presence_of :code, :name, :status, :release_version, :date, :description
