@@ -1,0 +1,12 @@
+- form_for @time_tracker do |f|
+  = f.error_messages
+  %p
+    = f.label :activity_id
+    %br
+    = f.text_field :activity_id
+  %p
+    = f.label :issue_id
+    %br
+    = f.text_field :issue_id
+  %p
+    = f.submit "Submit"

@@ -16,8 +16,24 @@ eol
     end
   end
   
+  def link_to_redmine(issue, name=issue.subject)
+    link_to name, ISSUES_URL % issue.id, :target => "_blank"
+  end
+  
   def nl2br(s)
     s.gsub(/\n/, '<br/>')
+  end
+  
+  def hours_in_words(hours, hide_minutes=false)
+    hours = 0 if hours < 0
+    distance_in_hours   = hours.floor
+    distance_in_minutes = ((hours - distance_in_hours) * 60).floor
+    
+    tokens = []
+    
+    tokens << pluralize(distance_in_hours, 'hora') if distance_in_hours > 0
+    tokens << pluralize(distance_in_minutes, 'minuto') unless hide_minutes && distance_in_minutes == 0
+    tokens.join(' y ')
   end
   
   private

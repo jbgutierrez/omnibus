@@ -1,0 +1,15 @@
+- title "Time Tracker"
+
+%p
+  %strong Activity:
+  =h @time_tracker.activity_id
+%p
+  %strong Issue:
+  =h @time_tracker.issue_id
+
+%p
+  = link_to "Edit", edit_time_tracker_path(@time_tracker)
+  |
+  = link_to "Destroy", @time_tracker, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", time_trackers_path

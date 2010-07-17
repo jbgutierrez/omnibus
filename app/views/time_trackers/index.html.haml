@@ -1,0 +1,63 @@
+- title "Imputación de horas"
+
+%h2= @issue.subject
+
+- form_tag time_trackers_path, :method => :get, :style => 'overflow:hidden;display:block;' do
+  %div{ :style => 'float:left;' } 
+    - Activity.all.each do	|a|
+      = submit_tag a.name, :disabled => a == @issue.current_activity && @issue.open?
+  %div{ :style => 'float:right;' }
+    = text_field_tag :search, params[:search]
+    = submit_tag "Go"
+
+%br
+
+%p
+  Tiempo estimado
+  = link_to_redmine(@issue, "[editar]")
+%p{ :style => 'margin-left:20px;font-size:24px;' }= hours_in_words @issue.estimated_hours, true
+
+%p Tiempo real
+%div{ :style => 'margin-left:20px;font-size:24px;' }
+  = hours_in_words @issue.real_hours
+  %table{ :style => 'font-size:10px;width:40%;' }
+    %tr
+      %th Actividad
+      %th Reales
+    - for time_tracker in @issue.time_trackers
+      %tr
+        %td= h time_tracker.activity
+        %td= hours_in_words time_tracker.real_hours
+
+%p Tiempo restante
+#timer{ :style => 'margin-left:20px;font-size:24px;' }
+  - if @issue.open?
+    %script
+      = "var year  = #{@issue.finish_line.year};"
+      = "var month = #{@issue.finish_line.month - 1};"
+      = "var day   = #{@issue.finish_line.day};"
+      = "var hour  = #{@issue.finish_line.hour};"
+      = "var min   = #{@issue.finish_line.min};"
+      = "var sec   = #{@issue.finish_line.sec};"
+      = "var date  = new Date(year,month,day,hour,min,sec);"
+      = "$('#timer').countdown({until: date, compact: true, description: ''});"
+  - else
+    = hours_in_words @issue.hours_left
+
+%br
+
+%h2 Imputaciones de la última semana
+%table
+  %tr
+    %th Comenzado
+    %th Ticket
+    %th Actividad
+    %th Estimadas
+    %th Reales
+  - for issue in @issues.reverse
+    %tr
+      %td= h time_ago_in_words(issue.start_at)
+      %td= link_to truncate(issue.subject, 100), time_trackers_path(:search => issue.id)
+      %td= h issue.current_activity
+      %td= hours_in_words issue.estimated_hours, true
+      %td= hours_in_words issue.real_hours
