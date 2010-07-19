@@ -17,7 +17,7 @@
 #
 
 class Project < ActiveRecord::Base
-  establish_connection :redmine  
+  establish_connection :redmine
   has_many :versions
   has_many :issues
   

@@ -16,22 +16,29 @@ class TimeTracker < ActiveRecord::Base
   belongs_to :activity
   delegate :estimated_hours, :to => :issue
   
+  # Propiedades
   def name
     "#{issue.id} - #{issue.subject}"
   end
+
   def real_hours
     events.map(&:real_hours).sum
   end
+
   def finish_line
     time_left   = estimated_hours - real_hours
     DateTime.now + time_left / 24.0
   end
+
   def start_at
     events.map(&:start_at).min
   end
+
   def open?
     events.any?{|e| e.end_at.nil? }
   end  
+
+  # Métodos
   def start(current_user)
     save!
     timestamp = DateTime.now

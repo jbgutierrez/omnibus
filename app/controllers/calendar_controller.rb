@@ -1,6 +1,6 @@
 class CalendarController < ApplicationController
   
-  def index
+  def show
     @month = (params[:month] || Time.zone.now.month).to_i
     @year  = (params[:year]  || Time.zone.now.year).to_i
     @shown_month = Date.civil(@year, @month)
@@ -9,7 +9,13 @@ class CalendarController < ApplicationController
     @activities = params[:activities].nil? ? Activity.all : Activity.find(params[:activities])
     @projects   = params[:projects].nil? ? Project.all : Project.find(params[:projects])
     
-    @event_strips = Event.filtered_event_strips(@shown_month, @users, @activities, @projects)
+    respond_to do |format|
+      format.html { @event_strips = Event.filtered_event_strips(@shown_month, @users, @activities, @projects) }
+      format.xls do
+        events = Event.filtered_events(@shown_month, @users, @activities, @projects)
+        render :inline => EventsSpreadsheet.generate(events)
+      end
+    end
   end
   
 end

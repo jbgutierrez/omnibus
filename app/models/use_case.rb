@@ -5,7 +5,7 @@
 #
 #  id                  :integer(4)      not null, primary key
 #  name                :string(255)
-#  test_cases          :text(2147483647
+#  test_cases          :text
 #  use_case_diagram_id :integer(4)
 #  created_at          :datetime
 #  updated_at          :datetime
