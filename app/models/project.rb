@@ -16,7 +16,7 @@
 #  status         :integer(4)      default(1), not null
 #
 
-class Project < ActiveRecord::Base
+class Project < Base
   establish_connection :redmine
   has_many :versions
   has_many :issues

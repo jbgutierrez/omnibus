@@ -10,10 +10,10 @@
 #  is_default :boolean(1)      not null
 #
 
-class Activity < ActiveRecord::Base
+class Activity < Base
   establish_connection :redmine  
   set_table_name :enumerations
-  default_scope :conditions => { :opt => 'ACTI' }
+  default_scope :conditions => { :opt => 'ACTI' }, :order => :position
   has_many :time_trackers
   def to_s
     name

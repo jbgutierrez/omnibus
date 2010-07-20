@@ -16,7 +16,8 @@
 #  updater_id      :integer(4)
 #
 
-class Requirement < ActiveRecord::Base
+require 'requirement/exporter'
+class Requirement < Base
   stampable
   validates_presence_of :code, :name, :status, :release_version, :date, :description
   

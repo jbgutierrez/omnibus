@@ -1,4 +1,4 @@
-class Requirement < ActiveRecord::Base
+class Requirement < Base
   state_machine :initial => :original, :attribute => :status do
     event :anular do
       transition [ any - :anulado ] => :anulado

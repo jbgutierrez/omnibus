@@ -17,5 +17,5 @@
 #  updater_id      :integer(4)
 #
 
-class VersionedRequirement < ActiveRecord::Base
+class VersionedRequirement < Base
 end

@@ -10,7 +10,7 @@
 #  updated_at  :datetime
 #
 
-class TimeTracker < ActiveRecord::Base
+class TimeTracker < Base
   belongs_to :issue
   has_many :events
   belongs_to :activity
@@ -39,17 +39,17 @@ class TimeTracker < ActiveRecord::Base
   end  
 
   # Métodos
-  def start(current_user)
+  def start
     save!
     timestamp = DateTime.now
     
-    if last_event = Event.find_by_user_id_and_end_at(current_user, nil)
+    if last_event = Event.for_current_user.open.first
       last_event.end_at = timestamp
       last_event.save
     end
     
-    event = events.build
-    event.user = current_user
+    event          = events.build
+    event.user     = current_user
     event.start_at = timestamp + 1.second
     event.save
     event

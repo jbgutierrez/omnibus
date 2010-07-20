@@ -12,14 +12,18 @@
 #  updated_at      :datetime
 #
 
-class Event < ActiveRecord::Base
+require 'event/exporter'
+class Event < Base
   has_event_calendar
+  
   belongs_to :time_tracker
   belongs_to :user
   
   delegate :name, :to => :time_tracker 
   
   named_scope :recent, lambda { |*args| {:conditions => ["start_at > ?", (args.first || 1.week.ago)]} }
+  named_scope :for_current_user, lambda { |*args| {:conditions => ["user_id = ?", Base.current_user.id]} }
+  named_scope :open, :conditions => ['end_at is ?', nil]
   
   SECONDS_OF_AN_HOUR = 3600.0
   
@@ -59,6 +63,7 @@ class Event < ActiveRecord::Base
       event_strips = create_event_strips(strip_start, strip_end, events)
       event_strips
     end
+    # Este método se usa para generar el calendario
     def filtered_events(shown_date, users, activities, projects)
       find_options = {:joins => [ :time_tracker ], :conditions => {:user_id => users, :"time_trackers.activity_id" => activities }}
       strip_start, strip_end = get_start_and_end_dates(shown_date, 0)

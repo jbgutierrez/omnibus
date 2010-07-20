@@ -3,17 +3,12 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  helper_method :current_user
-
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
-
-  filter_parameter_logging :password
-
-  def current_user
-    @user ||= User.find(session[:user])
-  end
   
+  include CurrentUserModule
   before_filter :authenticate
+  filter_parameter_logging :password
+  helper_method :current_user
 
   private
 
@@ -25,7 +20,8 @@ class ApplicationController < ActionController::Base
     else
       @user ||= User.find(1)
     end
-    session[:user] = @user.id unless @user.nil?
+    session[:user]    = @user.id rescue nil
+    self.current_user = @user
   end
   
   def development?

@@ -9,6 +9,6 @@
 #  updated_at :datetime
 #
 
-class FunctionalArea < ActiveRecord::Base
+class FunctionalArea < Base
   has_many :use_case_diagrams
 end

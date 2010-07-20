@@ -13,9 +13,9 @@
 #  updater_id          :integer(4)
 #
 
-require 'acceptance_tests'
+require 'use_case/acceptance_tests'
 
-class UseCase < ActiveRecord::Base
+class UseCase < Base
   stampable
   validates_presence_of :name, :use_case_diagram
   belongs_to :use_case_diagram

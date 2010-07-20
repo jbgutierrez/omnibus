@@ -21,7 +21,7 @@
 #
 
 require "digest/sha1"
-class User < ActiveRecord::Base
+class User < Base
   establish_connection :redmine
   has_many :events
     

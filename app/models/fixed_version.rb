@@ -13,7 +13,7 @@
 #  wiki_page_title :string(255)
 #
 
-class FixedVersion < ActiveRecord::Base
+class FixedVersion < Base
   establish_connection :redmine
   set_table_name :versions
   has_many :issues

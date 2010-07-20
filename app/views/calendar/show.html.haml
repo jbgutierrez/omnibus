@@ -23,7 +23,8 @@
         = user.firstname
   
   = submit_tag "Filtrar"
-  o
-  = link_to "exportar a excel", calendar_path(:format => :xls)
+  |
+  - link_to calendar_path(:format => :xls ) do
+    = image_tag('excel.png')
 
 = event_calendar

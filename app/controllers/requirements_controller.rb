@@ -1,12 +1,14 @@
 class RequirementsController < InheritedResources::Base
   
   def index
-    @search       = Requirement.search params[:search]
-    @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
-    hash          = @search.count(:group => 'status')
-    data          = hash.values.inspect
-    labels        = hash.keys.map{ |k| "#{k.humanize} (#{hash[k]})"}.inspect
-    @chart_data =<<eol
+    respond_to do |format|
+      format.html do
+        @search       = Requirement.search params[:search]
+        @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'updated_at DESC'
+        hash          = @search.count(:group => 'status')
+        data          = hash.values.inspect
+        labels        = hash.keys.map{ |k| "#{k.humanize} (#{hash[k]})"}.inspect
+        @chart_data =<<eol
 {
   data        : #{data},
   axis_labels : #{labels},
@@ -15,6 +17,11 @@ class RequirementsController < InheritedResources::Base
   bg          : '000'
 }
 eol
+      end
+      format.xls do
+        render :inline => RequirementUtils::Exporter.to_xls
+      end
+    end
   end
   
   def list
@@ -28,12 +35,6 @@ eol
           @use_case.requirements.delete(@requirement) if @use_case.requirements.include?(@requirement)
       end
     end
-  end
-  
-  def refresh_report
-    RequirementsSpreadsheet.send_later(:refresh)
-    flash[:notice] = "Se está regenerando el fichero excel."
-    redirect_to requirements_url
   end
   
   def edit_multiple

@@ -124,9 +124,4 @@ namespace :ppee do
         
   end
 
-  desc "Exporta la primera hoja de la RQ005.xml"  
-  task :export_requirements => :environment do |t, args|
-    RequirementsSpreadsheet.refresh
-  end
-
 end

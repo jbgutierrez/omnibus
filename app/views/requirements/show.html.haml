@@ -32,10 +32,15 @@
       %p= link_to truncate(u.name, 40), u
     %p= link_to "Gestión de relaciones", list_requirements_path
 
-  .box
-    %strong Peticiones relacionadas
-    - issues_for([@requirement]).each do |link|
-      %p= link
+  - total_issues = Issue.find_by_requirements( [@requirement] )
+  - unless total_issues.empty?
+    .box
+      %strong Peticiones relacionadas
+      %br
+      - total_issues.group_by(&:fixed_version).each_pair do |version, issues|
+        %small= version.name rescue "(sin version)"
+        - issues.each do |issue|
+          %p= link_to_redmine(issue)
 
   .box
     %strong Histórico

@@ -29,15 +29,11 @@
     %ol{:style => 'clear:both'}
       %li{:style => "float:left;"}
         = f.submit "Buscar"
-        ó
-        = link_to "Nuevo", new_requirement_path
-      %li{:style => "float:right;"}
-        - spreadsheet = RequirementsSpreadsheet.spreadsheet_info_for
-        - link_to spreadsheet.url do
+        |
+        - link_to requirements_path(:format => :xls ) do
           = image_tag('excel.png')
-        = "generado hace #{time_ago_in_words(spreadsheet.created_at)}"
-        %small
-          = link_to "[actualizar]", refresh_report_requirements_path
+        |
+        = link_to "Nuevo", new_requirement_path
 
   - unless @requirements.empty?
     = will_paginate @requirements
@@ -46,12 +42,12 @@
       %tr
         %th Nombre
         %th Descripción
-        %th Estado
+        %th 
       - for requirement in @requirements
         %tr
-          %td= link_to truncate(requirement.name, :length => 50), requirement
+          %td= link_to truncate("#{requirement.code} - #{requirement.name}", :length => 50), requirement
           %td= h truncate(requirement.description, :length => 120 )
-          %td= h requirement.status.humanize
-    
+          %td
+            %small= "#{requirement.status.humanize.downcase} desde hace #{time_ago_in_words(requirement.date)}"
     = link_to_function "Edición Múltiple", "submitTo('#{edit_multiple_requirements_path}', 'post')"
     = will_paginate @requirements

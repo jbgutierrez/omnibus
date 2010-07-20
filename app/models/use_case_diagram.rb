@@ -10,7 +10,7 @@
 #  updated_at         :datetime
 #
 
-class UseCaseDiagram < ActiveRecord::Base
+class UseCaseDiagram < Base
   belongs_to :functional_area
   has_many :use_cases
 end

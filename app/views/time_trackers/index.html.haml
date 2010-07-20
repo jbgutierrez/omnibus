@@ -5,13 +5,13 @@
   - unless @issue.nil?
     %div{ :style => 'float:left;' } 
       - Activity.all.each do	|a|
-        = submit_tag a.name, :disabled => a == @issue.current_activity && @issue == @active
+        = submit_tag a.name, :disabled => @issue == @last_issue && a == @issue.current_activity
         
   %div{ :style => 'float:right;text-align:right;' }
     = text_field_tag :search, @issue ? @issue.id : ""
     = submit_tag "Go"
-    - if @issue != @active
-      = link_to "→ #{@active.id}", time_trackers_path(:search => @active.id)
+    - unless @issue == @last_issue || @last_issue.nil?
+      = link_to "→ #{@last_issue.id}", time_trackers_path(:search => @last_issue.id)
 
   .clear
   - unless @issue.nil?
@@ -47,9 +47,9 @@
           = "$('#timer').countdown({until: date, compact: true, description: ''});"
       - else
         = hours_in_words @issue.hours_left
-    - if @issue == @active
+    - if @issue == @last_issue
       %div{ :style => 'margin-left:20px;' }
-        = submit_tag @active.open? ? "Parar" : "Reanudar", :name => :toggle
+        = submit_tag @last_issue.open? ? "Parar" : "Reanudar", :name => :toggle
     
     %br
   
@@ -58,14 +58,8 @@
     %table
       %tr
         %th Comenzado
-        %th Ticket
-        %th Actividad
-        %th Estimadas
-        %th Reales
+        %th Tarea
       - for issue in @issues.reverse
         %tr
-          %td= h time_ago_in_words(issue.start_at)
-          %td= link_to truncate("#{issue.id} #{issue.subject}", 100), time_trackers_path(:search => issue.id)
-          %td= h issue.current_activity
-          %td= hours_in_words issue.estimated_hours, true
-          %td= hours_in_words issue.real_hours
+          %td= "hace #{time_ago_in_words(issue.start_at)}"
+          %td= link_to "#{issue.id} - #{issue.subject}", time_trackers_path(:search => issue.id)

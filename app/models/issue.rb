@@ -23,12 +23,23 @@
 #  estimated_hours  :float
 #
 
-class Issue < ActiveRecord::Base
-  establish_connection :redmine  
-  default_scope :conditions => 'estimated_hours is not null'
+class Issue < Base
+  establish_connection :redmine
   belongs_to :project
   belongs_to :fixed_version
   has_many :time_trackers
+  
+  def self.find_by_requirements(requirements)
+    likes = requirements.map{|r| "custom_values.value LIKE '%#{r.code}%'"}
+    query =<<EOS
+    SELECT issues.*
+    FROM issues, custom_values
+    WHERE issues.id = custom_values.customized_id and custom_values.custom_field_id = 5 and ( %s )
+    ORDER BY issues.fixed_version_id DESC, issues.created_on DESC
+EOS
+    find_by_sql(query % likes)
+  end
+  
   
   # Propiedades 
   def real_hours
@@ -51,8 +62,12 @@ class Issue < ActiveRecord::Base
   end
   
   def current_activity
-    current_activity = time_trackers.detect(&:open?) || time_trackers.last
-    current_activity && current_activity.activity
+    if last_event = Event.for_current_user.open.last
+      time_tracker     = last_event.time_tracker
+      issue            = time_tracker.issue
+      current_activity = issue == self && time_tracker.activity      
+      current_activity
+    end
   end
   
   def start_at
@@ -60,16 +75,16 @@ class Issue < ActiveRecord::Base
   end
   
   # Métodos 
-  def track(activity, current_user)
+  def track(activity)
     time_tracker          = TimeTracker.find_by_issue_id_and_activity_id(self, activity) || time_trackers.build
     time_tracker.issue    = self
     time_tracker.activity = activity
-    time_tracker.start(current_user)
+    time_tracker.start
     time_tracker
   end
   
-  def toggle_status(current_user)
-    event = Event.find_last_by_user_id(current_user)
+  def toggle_status
+    event = Event.for_current_user.last
     event.toggle_status
   end
 

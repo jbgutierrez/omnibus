@@ -13,7 +13,7 @@ class CalendarController < ApplicationController
       format.html { @event_strips = Event.filtered_event_strips(@shown_month, @users, @activities, @projects) }
       format.xls do
         events = Event.filtered_events(@shown_month, @users, @activities, @projects)
-        render :inline => EventsSpreadsheet.generate(events)
+        render :inline => EventUtils::Exporter.to_xls(events)
       end
     end
   end
