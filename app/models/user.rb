@@ -21,12 +21,21 @@
 #
 
 require "digest/sha1"
+require "user/work_schedule"
 class User < Base
   establish_connection :redmine
   has_many :events
     
   def self.try_to_login(login, password)
     !password.blank? && first(:conditions => ["login=? and hashed_password=?", login, hash_password(password)])
+  end
+  
+  def schedule
+    @schedule ||= lambda{
+      schedule = WorkSchedule.new("8:00 AM", "3:00 PM")
+      schedule.set_holidays_on :sat, :sun
+      schedule
+    }.call;
   end
 
   private

@@ -1,6 +1,6 @@
 # coding: utf-8
 require File.dirname(__FILE__) + '/test_helper'
-require 'acceptance_tests'
+require File.expand_path(File.dirname(__FILE__) + "/../app/models/use_case/acceptance_tests")
 
 class ParserTest < Test::Unit::TestCase
   
