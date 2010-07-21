@@ -40,7 +40,6 @@ EOS
     find_by_sql(query % likes)
   end
   
-  
   # Propiedades 
   def real_hours
     time_trackers.map(&:real_hours).sum
@@ -61,15 +60,6 @@ EOS
     time_trackers.any?(&:open?)
   end
   
-  def current_activity
-    if last_event = Event.for_current_user.open.last
-      time_tracker     = last_event.time_tracker
-      issue            = time_tracker.issue
-      current_activity = issue == self && time_tracker.activity      
-      current_activity
-    end
-  end
-  
   def start_at
     time_trackers.map(&:start_at).min
   end
@@ -83,9 +73,4 @@ EOS
     time_tracker
   end
   
-  def toggle_status
-    event = Event.for_current_user.last
-    event.toggle_status
-  end
-
 end

@@ -1,19 +1,20 @@
 - title "Imputación de horas"
 
 %h2= "#{@issue.id} - #{@issue.subject}" rescue "Comienza buscando una petición ..."
-- form_tag time_trackers_path, :method => :get, :style => 'overflow:hidden;display:block;' do
-  - unless @issue.nil?
-    %div{ :style => 'float:left;' } 
-      - Activity.all.each do	|a|
-        = submit_tag a.name, :disabled => @issue == @last_issue && a == @issue.current_activity
-        
-  %div{ :style => 'float:right;text-align:right;' }
+
+%div{ :style => 'display:inline; float:right; text-align: right;' }
+  - form_tag time_trackers_path, :method => :get do
     = text_field_tag :search, @issue ? @issue.id : ""
     = submit_tag "Go"
     - unless @issue == @last_issue || @last_issue.nil?
       = link_to "→ #{@last_issue.id}", time_trackers_path(:search => @last_issue.id)
 
+- unless @issue.nil?
+  %div{ :style => 'display:inline; margin-right:300px; overflow:hidden;' }
+    - Activity.all.each do	|a|
+      - form_to_time_trackers a.name, @issue, :disabled => @issue == @last_issue && a == @last_time_tracker.activity
   .clear
+  %br
   - unless @issue.nil?
     %p
       Tiempo estimado
@@ -48,8 +49,8 @@
       - else
         = hours_in_words @issue.hours_left
     - if @issue == @last_issue
-      %div{ :style => 'margin-left:20px;' }
-        = submit_tag @last_issue.open? ? "Parar" : "Reanudar", :name => :toggle
+      %div{ :style => 'margin-left:20px;' }          
+        - form_to_time_trackers(@last_event.open? ? "Parar" : "Reanudar", @last_issue)
     
     %br
   

@@ -1,10 +1,10 @@
 class RequirementsController < InheritedResources::Base
-  
+
   def index
     respond_to do |format|
       format.html do
         @search       = Requirement.search params[:search]
-        @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'updated_at DESC'
+        @requirements = @search.paginate :page => params[:page], :per_page => 15, :order => 'code ASC'
         hash          = @search.count(:group => 'status')
         data          = hash.values.inspect
         labels        = hash.keys.map{ |k| "#{k.humanize} (#{hash[k]})"}.inspect

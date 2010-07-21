@@ -1,7 +1,7 @@
 class Requirement < Base
   state_machine :initial => :original, :attribute => :status do
     event :anular do
-      transition [ any - :anulado ] => :anulado
+      transition any - :anulado => :anulado
     end
     event :continuar do
       transition :original   => :detallado
@@ -37,6 +37,6 @@ class Requirement < Base
   end
   
   def self.status_values
-    [ :original, :detallado, :en_curso, :en_pruebas, :finalizado, :implantado, :modificar, :alterado, :anulado ]
+    [ :original, :detallado, :en_curso, :en_pruebas, :finalizado, :implantado, :modificado, :alterado, :anulado ]
   end
 end

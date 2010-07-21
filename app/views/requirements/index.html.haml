@@ -45,9 +45,12 @@
         %th 
       - for requirement in @requirements
         %tr
+          - count = Issue.find_by_requirements([ requirement ]).count
           %td= link_to truncate("#{requirement.code} - #{requirement.name}", :length => 50), requirement
           %td= h truncate(requirement.description, :length => 120 )
           %td
-            %small= "#{requirement.status.humanize.downcase} desde hace #{time_ago_in_words(requirement.date)}"
+            %small= "#{requirement.status.humanize.downcase} hace #{time_ago_in_words(requirement.date)}"
+            %br
+            %small= pluralize(count, "petición abierta", "peticiones abiertas")
     = link_to_function "Edición Múltiple", "submitTo('#{edit_multiple_requirements_path}', 'post')"
     = will_paginate @requirements

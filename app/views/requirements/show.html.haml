@@ -25,6 +25,9 @@
       = link_to "Lista", requirements_path
       |
       = link_to "Eliminar", @requirement, :confirm => 'Estás seguro?', :method => :delete, :class => 'warn'
+    %p
+      %small= "actualizado hace #{time_ago_in_words(@requirement.updated_at)} por #{@requirement.updated_by.login}"
+
 
   .box
     %strong Casos de uso

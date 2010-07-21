@@ -19,6 +19,8 @@
           = link_to "Imputaciones", time_trackers_url
         %li
           = link_to "Diario", calendar_url
+        %li{ :style => 'float:right; text-align:right' }
+          = link_to "logueado como #{current_user.login}", '#'
       #content
         - flash.each do |name, msg|
           = content_tag :div, msg, :class => "#{name}"

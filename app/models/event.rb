@@ -28,7 +28,7 @@ class Event < Base
   SECONDS_OF_AN_HOUR = 3600.0
   
   def real_hours
-    current_user.schedule.working_hours_between(start_at, end_at || 0.minute.ago)
+    user.schedule.working_hours_between(start_at, end_at || 0.minute.ago)
   end
   
   def color
