@@ -1,6 +1,6 @@
 .column {
-	width: 45%;
-	height: 400px;
+	width: 49%;
+	height: 720px;
 	border: solid 1px #eee;
 	float: left;
 	margin-left: 5px;
@@ -10,7 +10,7 @@
 .column ul {
 	list-style: none;
 	overflow: scroll;
-	height: 403px;
+	height: 700px;
 }
 
 .column ul li {

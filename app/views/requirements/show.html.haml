@@ -32,7 +32,9 @@
   .box
     %strong Casos de uso
     - @requirement.use_cases.each do |u|
-      %p= link_to truncate(u.name, 40), u
+      - @style = "text-decoration: none;"
+      - @style += 'color:red' if u.test_cases.nil?
+      %p= link_to u.name, u.test_cases.blank? ? edit_use_case_path(u) : u, :style => @style
     %p= link_to "Gestión de relaciones", list_requirements_path
 
   - total_issues = Issue.find_by_requirements( [@requirement] )

@@ -2,7 +2,7 @@
 module PPEE
   
   def self.search_index(collection, prefix)
-    match = collection.find{ |a| a.lstrip.start_with?(prefix)}
+    match = collection.find{ |a| a.gsub(/<[^>]+>/, '').lstrip.start_with?(prefix)}
     collection.index(match) 
   end
 
@@ -19,17 +19,18 @@ module PPEE
       placeholders.each do |placeholder|
         placeholder.delete! '<'
         placeholder.delete! '>'
-        remove_blanks = placeholder.chomp!('?')
+        removable    = placeholder.chomp!('?')
+        when_present = placeholder.gsub!(/^!/,'')
         value = nil
         index = PPEE.search_index(keys, placeholder)
         value = values[index] unless index.nil?
-        if remove_blanks and value.blank?
+        if removable && (!when_present && value.blank? or when_present && !value.blank?)
           item = nil
           break
         else
           value ||= "FALTA LA CLAVE"
           item.gsub!("<#{placeholder}>", value)
-          item.gsub!("<#{placeholder}?>", '')
+          item.gsub!("<#{placeholder}?> ?", '')
         end
       end
     end

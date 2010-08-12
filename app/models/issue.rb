@@ -30,6 +30,7 @@ class Issue < Base
   has_many :time_trackers
   
   def self.find_by_requirements(requirements)
+    return [] if requirements.empty?
     likes = requirements.map{|r| "custom_values.value LIKE '%#{r.code}%'"}
     query =<<EOS
     SELECT issues.*

@@ -32,7 +32,13 @@ class UseCase < Base
   private
   
   def honors_grammar?
-    PPEE::GrammarParser.new.parse_or_fail(test_cases)
+    self.tests_count = ppee_test.scenarios.size
+    if e = ppee_test.extensions_examples
+      e.map(&:aliases)
+      e.map(&:all_preconditions)
+      e.map(&:all_actions)
+      e.map(&:all_postconditions)
+    end rescue raise "La sintaxis es correcta pero la semantica no. Revísa los textos"
   rescue Exception => e
     errors.add(:test_cases, e.message)
   end

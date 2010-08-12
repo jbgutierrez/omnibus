@@ -4,7 +4,7 @@
 .column
   %span Requerimientos
   %ul
-    = render :partial => 'list_requirement', :as => :requirement, :collection => Requirement.all
+    = render :partial => 'list_requirement', :as => :requirement, :collection => Requirement.all(:order => :code)
 
 .column
   %span Casos de uso

@@ -3,7 +3,7 @@
   %h2= @use_case.name
   - unless @use_case.ppee_test.nil?
     %div
-      %h3{:style => 'float:left;'}= pluralize(@use_case.ppee_test.scenarios.size, 'prueba asociada', 'pruebas asociadas')
+      %h3{:style => 'float:left;'}= pluralize(@use_case.tests_count, 'prueba asociada', 'pruebas asociadas')
       #source.clear
         :harsh
           #!harsh theme=sunburst
@@ -26,7 +26,7 @@
       %p= link_to truncate(r.name, 40), r
     %p= link_to "Gestión de relaciones", list_requirements_path
 
-  - total_issues = Issue.find_by_requirements( @use_case.requirements )
+  - total_issues = Issue.find_by_requirements( @use_case.requirements ) || []
   - unless total_issues.empty?
     .box
       %strong Peticiones relacionadas
@@ -41,6 +41,6 @@
   - unless @use_case.ppee_test.nil?
     .box{:style => 'width:65%; float:left'}
       / - begin
-      = render :partial => 'testrunner'
+      = render :partial => 'requirements/testrunner'
       / - rescue
       /   %p Hubo errores en la generación de la plantilla xml

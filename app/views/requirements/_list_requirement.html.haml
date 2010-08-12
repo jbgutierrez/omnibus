@@ -1,5 +1,5 @@
 - content_tag_for :li, requirement do
-  %span= requirement.name
+  %span= "#{requirement.code}-#{requirement.name}"
   %a.expand= requirement.use_cases.count
   %ul.internal_list
     - requirement.use_cases.each do |u|

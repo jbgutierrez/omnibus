@@ -1,6 +1,6 @@
 function update_list(use_case, requirement, action) {
   $.ajax({
-    url: "/requirements/list",
+    url: WEB_ROOT + "/requirements/list",
     type: "GET",
     dataType: "script",
     data: $.param({use_case_id: use_case.get_record_id(), requirement_id: requirement.get_record_id(), list_action: action }),

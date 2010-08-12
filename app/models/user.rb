@@ -23,6 +23,7 @@
 require "digest/sha1"
 require "user/work_schedule"
 class User < Base
+  model_stamper
   establish_connection :redmine
   has_many :events
     
