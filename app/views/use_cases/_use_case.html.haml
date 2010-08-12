@@ -1,5 +1,8 @@
 - semantic_form_for @use_case do |f|
-  = f.inputs :use_case_diagram, :name, :test_cases  	
+  - f.inputs do
+    = f.input :use_case_diagram
+    = f.input :name
+    = f.input :test_cases, :input_html => { :wrap => 'off' }
   - f.buttons do
     = f.commit_button
     ó
