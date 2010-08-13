@@ -1,0 +1,65 @@
+%strong.block= "Batería de pruebas (#{pluralize(@use_case.tests_count, 'prueba')})"
+
+%ul#toc
+  - @use_case.ppee_test.principal_examples.each_with_index do |principal, index|
+    - summary = "#{@use_case.name} [PRI ##{index + 1}]"
+    - summary << " - #{principal.aliases}" unless principal.aliases.blank?
+    %li
+      =link_to summary, "#PRI-#{index}"
+  - @use_case.ppee_test.extensions_examples.each_with_index do |extension, index|
+    - summary = "#{@use_case.name} [ALT ##{index + 1}]"
+    - summary << " - #{extension.aliases}" unless extension.aliases.blank?
+    %li
+      =link_to summary, "#ALT-#{index}"
+
+- @use_case.ppee_test.principal_examples.each_with_index do |principal, index|
+  - summary = "#{@use_case.name} [PRI ##{index + 1}]"
+  - summary << " - #{principal.aliases}" unless principal.aliases.blank?
+  %strong.block{:id => "PRI-#{index}"}
+    = summary
+    %small=link_to '(volver)', "#toc"
+  - unless principal.preconditions.empty?
+    %small Precondiciones:
+    %ol
+      - principal.preconditions.each do |precondition|
+        %li= precondition
+  %small Pasos:
+  %ol
+    - principal.actions.each do |action|
+      %li= action
+
+  %small Respuesta:
+  %ol
+    - principal.postconditions.each do |postcondition|
+      %li= postcondition
+
+- @use_case.ppee_test.extensions_examples.each_with_index do |extension, index|
+  - summary = "#{@use_case.name} [ALT ##{index + 1}]"
+  - summary << " - #{extension.aliases}" unless extension.aliases.blank?
+  %strong.block{:id => "ALT-#{index}"}
+    = summary
+    %small=link_to '(volver)', "#toc"
+  - unless extension.all_preconditions.empty?
+    %small Precondiciones:
+    %ol
+      - extension.inherited_preconditions.each do |precondition|
+        %li= precondition
+      - extension.preconditions.each do |precondition|
+        %li
+          %strong= precondition
+  %small Pasos:
+  %ol
+    - extension.first_inherited_actions.each do |action|
+      %li= action
+    - extension.specific_actions.each do |action|
+      %li
+        %strong= action
+    - extension.last_inherited_actions.each do |action|
+      %li= action
+  %small Respuesta:
+  %ol
+    - extension.inherited_postconditions.each do |postcondition|
+      %li= postcondition
+    - extension.specific_postconditions.each do |postcondition|
+      %li
+        %strong= postcondition

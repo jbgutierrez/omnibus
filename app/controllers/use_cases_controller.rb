@@ -7,7 +7,7 @@ class UseCasesController < InheritedResources::Base
   
   def show
     @use_case = UseCase.find(params[:id])
-    flash[:notice] = "Este caso de uso no está relacionado con ningún requerimiento. Arréglalo cuanto antes para asegurar la trazabilidad!" if @use_case.requirements.empty?
+    flash.now[:notice] = "Este caso de uso no está relacionado con ningún requerimiento. Arréglalo cuanto antes para asegurar la #{@template.link_to('trazabilidad', list_requirements_path)}!" if @use_case.requirements.empty?
     show!
   end
 end
