@@ -13,7 +13,7 @@
 						<li>
 						  <%= link_to use_case.name, use_case.test_cases.blank? ? edit_use_case_path(use_case) : use_case, :style => @style  %>
 					     <% if use_case.updated_at.today? %>	
-						    <small>actualizado hace <%= time_ago_in_words(use_case.updated_at) %></small>
+						    <small title="<%= use_case.updated_at %>">actualizado hace <%= time_ago_in_words(use_case.updated_at) %></small>
 						  <% end %>
 						</li> 
 					<% end %>

@@ -26,7 +26,7 @@
       |
       = link_to "Eliminar", @requirement, :confirm => 'Estás seguro?', :method => :delete, :class => 'warn'
     %p
-      %small= "actualizado hace #{time_ago_in_words(@requirement.updated_at)} por #{@requirement.updated_by.login}"
+      %small{:title => @requirement.updated_at}= "actualizado hace #{time_ago_in_words(@requirement.updated_at)} por #{@requirement.updated_by.login}"
 
 
   .box
@@ -51,5 +51,6 @@
     %strong Histórico
     - ([@requirement] + @requirement.versions.reverse).each do |version|
       %p
-        %span= version.status.humanize
-        %span= "hace #{time_ago_in_words(version.date)}"
+        %span{:title => "#{version.date}"}
+          = version.status.humanize
+          = "hace #{time_ago_in_words(version.date)}"

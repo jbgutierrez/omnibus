@@ -4,7 +4,7 @@ module ApplicationHelper
   ISSUES_URL = APP_CONFIG['redmine_url'] + '/issues/show/%s'
 
   def link_to_redmine(issue, name="#{issue.id} - #{issue.subject}")
-    link_to truncate(name), ISSUES_URL % issue.id, :target => "_blank"
+    link_to truncate(name), ISSUES_URL % issue.id, :target => "_blank", :title => name
   end
   
   def nl2br(s)

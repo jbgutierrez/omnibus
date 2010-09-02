@@ -13,6 +13,7 @@
       %li
         = f.label :code_like, "Codigo"
         = f.text_field :code_like
+        %p.inline-hints Puedes buscar múltiples requerimientos separado por coma el código. Ejemplo: RF-004, RF-037, RF-039, ...
       %li
         = f.label :name_like, "Nombre"
         = f.text_field :name_like
@@ -25,6 +26,7 @@
       %li
         = f.label :release_version_eq, "Version"
         = f.collection_select :release_version_eq, Requirement.release_versions, :to_s, :to_s, :include_blank => true
+        %p.inline-hints Utiliza este filtro para extraer el paquete de pruebas de la versión
 
     %ol{:style => 'clear:both'}
       %li{:style => "float:left;"}
@@ -48,7 +50,7 @@
       - for requirement in @requirements
         %tr
           %td
-            = link_to truncate("#{requirement.code} - #{requirement.name}", :length => 50), requirement
+            = link_to truncate("#{requirement.code} - #{requirement.name}", :length => 50), requirement, :title => requirement.name
             - count = Issue.find_by_requirements([ requirement ]).count
             - if count > 0
               %br
@@ -56,7 +58,7 @@
           %td
             = h truncate(requirement.description, :length => 90 )
           %td
-            %small= "#{requirement.status.humanize.downcase} hace #{time_ago_in_words(requirement.date)}"
+            %small{:title => requirement.date}= "#{requirement.status.humanize.downcase} hace #{time_ago_in_words(requirement.date)}"
             - if (count = requirement.use_cases.map(&:tests_count).compact.sum) > 0
               %br
               %small= pluralize(count, "prueba asociada", "pruebas asociadas")

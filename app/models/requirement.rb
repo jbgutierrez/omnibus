@@ -29,6 +29,14 @@ class Requirement < Base
   concerned_with :transitions
   before_update :create_version, :if => lambda{ |r| r.status_changed? }
   
+  named_scope :code_like, lambda { |str|
+    tokens = str.split(/, */)
+    like_condition = "code like ?"
+    like_conditions = ([like_condition] * tokens.size).flatten.join(" OR ")
+    values = tokens.map{|v| "%#{v}"}
+    {:conditions => [like_conditions, *values]}
+  }
+  
   def self.release_versions
     Requirement.all(:select => 'release_version', :group => 'release_version').reject{ |r| r.release_version.blank? }.map{ |r| r.release_version }
   end
