@@ -32,10 +32,10 @@
       %li{:style => "float:left;"}
         = f.submit "Buscar"
         |
-        = f.submit "Testrunner", :onclick => "$('form').attr('action', '#{requirements_path(:format => :xml)}')"
-        |
         - link_to requirements_path(:format => :xls ) do
           = image_tag('excel.png')
+        |
+        = link_to "Testlink", requirements_path(:format => :xml)
         |
         = link_to "Nuevo", new_requirement_path
 

@@ -14,7 +14,7 @@
 #
 
 require 'use_case/acceptance_tests'
-
+require 'use_case/exporter'
 class UseCase < Base
   stampable
   validates_presence_of :name, :use_case_diagram, :test_cases

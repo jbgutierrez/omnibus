@@ -1,3 +1,4 @@
+require 'use_case'
 class RequirementsController < InheritedResources::Base
 
   def index
@@ -19,22 +20,11 @@ class RequirementsController < InheritedResources::Base
 eol
       end
       format.xls do
-        render :inline => RequirementUtils::Exporter.to_xls
+        export = RequirementUtils::Exporter.to_xls
+        send_data(export, :filename => "export.xls", :type => "application/ms-excel")
       end
       format.xml do
-        @search = Requirement.search params[:search]
-        use_cases = @search.all(:include => :use_cases, :order => :code).map(&:use_cases).flatten
-        config = Rails::Configuration.new
-        name = config.database_configuration[RAILS_ENV]["database"].upcase
-        export = "<H1> Product: #{name} </h1>\n"
-        UseCaseDiagram.all.each do |group|
-          export << "<h2> Add group: #{group.name} </h2> Lorem ipsum dolor sit amet ...\n"
-        end
-        use_cases.each do |use_case|
-          next if use_case.ppee_test.nil?
-          @use_case = use_case
-          export << render_to_string(:partial => 'testrunner.html.haml')
-        end
+        export = UseCaseUtils::Exporter.to_xml
         send_data(export, :filename => "export.xml", :type => "text/xml")
       end
     end
